@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Kaff";
+  src: url("/fonts/alfont_com_29LT-Kaff-Medium.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-primary: #76c419;
+  --color-primary-hover: #68ae14;
+  --color-primary-50: #76c4190a;
+  --color-primary-100: #76c4191a;
+  --color-primary-200: #76c41933;
+  --color-ink: #0c0c0c;
+  --color-field: #f4f4f2;
+  --color-line: #e6e6e2;
+  --color-muted: #8c8c8c;
+  --color-danger: #e5383b;
+  --font-sans: "Kaff", ui-sans-serif, system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
+  --breakpoint-3xl: 120rem;
+}
+
+:root {
+  --mainColor: var(--color-primary);
+  --mainColor-50: var(--color-primary-50);
+  --mainColor-200: var(--color-primary-200);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Drawer slides in from the inline-end edge: left in RTL, right in LTR. */
+html[dir="rtl"] { --drawer-from: -100%; }
+html[dir="ltr"] { --drawer-from: 100%; }
+
+/* Reveal offsets that respect reading direction (start = right in RTL). */
+html[dir="rtl"] { --slide-from-start: 60px; --slide-from-end: -60px; }
+html[dir="ltr"] { --slide-from-start: -60px; --slide-from-end: 60px; }
+
+/* ---------- App-like behaviour on phones ---------- */
+
+/* Height reserved for the bottom tab bar (< lg); 0 on desktop. */
+:root { --bottom-nav-h: 0px; }
+@media (max-width: 1023.98px) {
+  :root { --bottom-nav-h: calc(64px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: var(--bottom-nav-h); }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-padding-top: 5rem;
+}
+
+/* No double-tap zoom delay on interactive elements. */
+a, button, [role="button"], label, summary {
+  touch-action: manipulation;
+}
+
+/* iOS zooms into inputs smaller than 16px on focus. */
+@media (max-width: 639.98px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* Scroll-reveal elements start translated sideways; never let them widen the page.
+   `clip` (unlike `hidden`) keeps the sticky header working. */
+html, body { overflow-x: clip; }

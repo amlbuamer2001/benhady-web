@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "siteName": "Bin Hadi",
+    "title": "Bin Hadi Car Rental",
+    "description": "A journey of non-stop growth. Premium car rental services with a fleet of more than 4,000 cars and 16 branches across the Kingdom."
+  },
+  "common": {
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "back": "Back",
+    "genericError": "Something went wrong. Please try again.",
+    "networkError": "Couldn't reach the server. Check your internet connection.",
+    "language": "عربي",
+    "changeLanguage": "Change language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "comingSoon": "This page is under construction"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "home": "Home",
+    "about": "About us",
+    "cars": "Our cars",
+    "contact": "Contact us",
+    "faq": "FAQ",
+    "login": "Log in",
+    "register": "Create account",
+    "logout": "Log out",
+    "profile": "My profile",
+    "bookings": "My bookings",
+    "notifications": "Notifications",
+    "tabs": {
+      "home": "Home",
+      "cars": "Cars",
+      "bookings": "Bookings",
+      "account": "Account",
+      "more": "More"
+    },
+    "menu": "Menu",
+    "guestTitle": "Welcome to Bin Hadi",
+    "guestSubtitle": "Log in to manage your bookings easily",
+    "viewProfile": "View profile",
+    "language": "Language"
+  },
+  "footer": {
+    "description": "A journey of non-stop growth ... Premium car rental services with a fleet of more than 4,000 cars and 16 branches across the Kingdom.",
+    "quickLinks": "Quick links",
+    "contactUs": "Contact us",
+    "terms": "Terms and conditions",
+    "address": "King Khalid International Airport, Riyadh, Saudi Arabia",
+    "rights": "All rights reserved - Bin Hadi Company {year} ©"
+  },
+  "validation": {
+    "required": "This field is required",
+    "nameMin": "Name must be at least 3 characters",
+    "emailInvalid": "Enter a valid email address",
+    "phoneInvalid": "Enter a valid mobile number, e.g. 05XXXXXXXX",
+    "dateInvalid": "Enter a valid date as DD/MM/YYYY",
+    "dateFuture": "The date must be in the future",
+    "minAge": "You must be at least 21 years old",
+    "digitsOnly": "Enter digits only",
+    "idLength": "The number must be 10 digits",
+    "passwordMin": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords don't match",
+    "otpIncomplete": "Enter the full verification code",
+    "termsRequired": "You must accept the terms and conditions",
+    "messageMin": "Message must be at least 10 characters"
+  },
+  "auth": {
+    "login": {
+      "heroTitle": "Log in",
+      "title": "Welcome to Bin Hadi",
+      "subtitle": "Log in to pick your next car with ease",
+      "identifier": "ID number / Border number",
+      "identifierPlaceholder": "2XXXXXXXXX",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "forgot": "Forgot your password?",
+      "submit": "Log in",
+      "register": "Create account",
+      "resetSuccess": "Your password was changed. Log in now."
+    },
+    "register": {
+      "heroTitle": "Create account",
+      "stepLabel": "Step {current} of {total}",
+      "step1": {
+        "title": "Create your account easily",
+        "subtitle": "One step away from booking your favorite car",
+        "name": "Full name",
+        "namePlaceholder": "Write your name as it appears on your ID ..",
+        "email": "Email",
+        "emailPlaceholder": "mail@mail.com",
+        "phone": "Mobile number",
+        "phonePlaceholder": "05 XXXX XXX",
+        "dob": "Date of birth",
+        "dobPlaceholder": "DD/MM/YYYY",
+        "dobHint": "You must be at least 21 years old"
+      },
+      "step2": {
+        "title": "Complete your details",
+        "subtitle": "One step away from booking your favorite car",
+        "typeLabel": "ID type",
+        "national_id": "National ID",
+        "resident_id": "Resident ID",
+        "visitor": "Visitor",
+        "idNumber": "ID number",
+        "idPlaceholder": "2XXXXXXXXX",
+        "idEndDate": "ID expiry date",
+        "versionNumber": "Version number",
+        "versionPlaceholder": "32 XXXX",
+        "licenseNumber": "License number",
+        "licensePlaceholder": "2XXXXXXXXX",
+        "borderEntryNumber": "Border entry number",
+        "borderPlaceholder": "XXXXXXXXXX"
+      },
+      "step3": {
+        "title": "Create a password",
+        "subtitle": "Use letters and numbers for a strong password",
+        "password": "Password",
+        "confirm": "Confirm password"
+      },
+      "step4": {
+        "drivingLicense": "Driving license number",
+        "drivingPlaceholder": "Enter the number written on your license ..",
+        "drivingHint": "The license must be valid",
+        "licenseExpiry": "License expiry date",
+        "terms": "By continuing, you agree to the app's <link>terms and conditions</link>",
+        "submit": "Create account"
+      }
+    },
+    "verify": {
+      "heroTitle": "Verification code",
+      "titleRegister": "Confirm your mobile number",
+      "titleReset": "Verify your phone",
+      "subtitle": "Enter the verification code sent to the number ...",
+      "edit": "Edit",
+      "codeLabel": "Verification code",
+      "resend": "Resend code",
+      "resent": "A new code was sent to your phone",
+      "submit": "Confirm"
+    },
+    "forgot": {
+      "heroTitle": "Enter your mobile number",
+      "title": "Forgot your password?",
+      "subtitle": "Enter your registered number and we'll send a verification code to reset your password.",
+      "phone": "Mobile number",
+      "submit": "Send verification code"
+    },
+    "reset": {
+      "heroTitle": "Verification code",
+      "title": "Reset password",
+      "subtitle": "Choose a strong password to protect your account.",
+      "newPassword": "New password",
+      "confirm": "Confirm password",
+      "submit": "Confirm"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Bin Hadi Car Rental",
+      "subtitle": "Your first destination for car rental, with a diverse fleet and world-class service",
+      "description": "Premium, unique services with capacity of up to 16 branches across the Kingdom’s airports, more than 4,000 cars and 70,000 valued customers.",
+      "cta": "Book your car",
+      "carsAlt": "A line-up of cars from the Bin Hadi fleet"
+    },
+    "search": {
+      "label": "Find a car",
+      "city": "City",
+      "cityPlaceholder": "City",
+      "date": "Pick-up date",
+      "datePlaceholder": "Pick-up date",
+      "time": "Pick-up time",
+      "timePlaceholder": "Pick-up time",
+      "submit": "Search"
+    },
+    "fleet": {
+      "title": "Our fleet",
+      "prev": "Previous",
+      "next": "Next",
+      "automatic": "Automatic",
+      "fuel": "Petrol",
+      "seats": "{count} seats",
+      "perDay": "/ day",
+      "details": "Details",
+      "currency": "Saudi riyal"
+    },
+    "about": {
+      "title": "About us",
+      "subtitle": "Who is Bin Hadi?",
+      "body": "We are Bin Hadi Car Rental, and we are glad to welcome you to our community of car lovers and professionals. We strive to create an outstanding experience that combines quality and trust, through a fleet of more than 4,000 cars across 16 branches throughout the Kingdom. We offer a range of rental services including daily and long-term rental, chauffeur service, lease-to-own and rental to GCC countries. Our team of experts is ready to serve you around the clock — enjoy your journey with Bin Hadi!",
+      "ceoName": "Rafat A. Samara",
+      "ceoRole": "(CEO & Founder)",
+      "signature": "Signature of Rafat A. Samara"
+    },
+    "explore": {
+      "title": "Explore our fleet",
+      "prev": "Previous",
+      "next": "Next",
+      "items": {
+        "luxury": {
+          "name": "Luxury cars",
+          "desc": "Top brands"
+        },
+        "scooter": {
+          "name": "Scooter",
+          "desc": "Quick rides"
+        },
+        "motorbike": {
+          "name": "Motorbike",
+          "desc": "Motorcycles"
+        },
+        "sedan": {
+          "name": "Sedan",
+          "desc": "Comfort & class"
+        },
+        "suv": {
+          "name": "4x4",
+          "desc": "Four-wheel drive"
+        },
+        "saloon": {
+          "name": "Saloon",
+          "desc": "Family cars"
+        },
+        "pickup": {
+          "name": "Pickup",
+          "desc": "Light trucks"
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Have a question? Our team is ready to help!",
+      "items": {
+        "types": {
+          "q": "What rental types are available?",
+          "a": "We offer daily, weekly and monthly rental, long-term leasing, chauffeur service, lease-to-own, and rental to GCC countries."
+        },
+        "booking": {
+          "q": "How can I book a car?",
+          "a": "Choose the city, pick-up date and time in the search bar, pick a car and tap Details to complete your booking in a few steps."
+        },
+        "insurance": {
+          "q": "Is insurance included?",
+          "a": "Yes, all our cars carry comprehensive insurance, and you can add extra coverage while booking."
+        },
+        "branches": {
+          "q": "Where are your branches?",
+          "a": "We have 16 branches across the Kingdom’s main airports and cities, including King Khalid International Airport in Riyadh."
+        },
+        "nonSaudi": {
+          "q": "Can non-Saudis rent a car?",
+          "a": "Yes, residents and visitors can rent with a valid ID and an approved driving licence."
+        },
+        "payment": {
+          "q": "What payment methods are available?",
+          "a": "We accept bank cards, mada and Apple Pay, as well as cash at the branch."
+        }
+      }
+    },
+    "testimonials": {
+      "title": "What our customers say",
+      "prev": "Previous",
+      "next": "Next",
+      "rating": "Rated {rating} out of 5",
+      "items": [
+        {
+          "name": "Ahmed Al-Tatawi",
+          "date": "25 December 2026",
+          "text": "\"Honestly, the platform saved me time and effort! Everything was quick and the assistant helped me pick the right option 👍\"",
+          "rating": 4
+        },
+        {
+          "name": "Mona Al-Saeedi",
+          "date": "30 December 2026",
+          "text": "\"My experience was great! Easy to use and incredibly fast replies to my questions — I recommend it to everyone 😍\"",
+          "rating": 4
+        },
+        {
+          "name": "Fahad Al-Mutairi",
+          "date": "25 January 2026",
+          "text": "\"An outstanding platform! Well-organised information made everything go smoothly. I’ll definitely use it again!\"",
+          "rating": 4
+        },
+        {
+          "name": "Sara Al-Qahtani",
+          "date": "2 February 2026",
+          "text": "\"I picked up the car at the airport with no delay, clean and brand new. Thank you Bin Hadi!\"",
+          "rating": 5
+        }
+      ]
+    },
+    "contact": {
+      "infoTitle": "Contact information",
+      "phone": "Phone",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "follow": "Follow us on social media",
+      "formTitle": "Contact us",
+      "name": "Full name",
+      "namePlaceholder": "Full name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "example@email.com",
+      "type": "Inquiry type",
+      "types": {
+        "other": "Other",
+        "booking": "Booking",
+        "complaint": "Complaint",
+        "suggestion": "Suggestion"
+      },
+      "message": "Your message",
+      "messagePlaceholder": "Write your message here...",
+      "submit": "Send",
+      "success": "Your message has been sent. We’ll get back to you soon."
+    }
+  },
+  "profile": {
+    "heroTitle": "My profile",
+    "sections": "Profile sections",
+    "verified": "Verified",
+    "save": "Save",
+    "saved": "Your changes have been saved",
+    "tabs": {
+      "basic": "Basic information",
+      "phone": "Mobile number",
+      "license": "Driving licence",
+      "identity": {
+        "national_id": "National ID",
+        "resident_id": "Resident ID",
+        "visitor": "Visitor details"
+      },
+      "password": "Password",
+      "delete": "Delete account"
+    },
+    "basic": {
+      "name": "Full name",
+      "email": "Email",
+      "dob": "Date of birth"
+    },
+    "phone": {
+      "label": "Mobile number"
+    },
+    "license": {
+      "number": "Driving licence number",
+      "numberPlaceholder": "Enter the number on your licence..",
+      "hint": "The licence must be valid",
+      "expiry": "Licence expiry date"
+    },
+    "identity": {
+      "idNumber": "ID number",
+      "idEndDate": "ID expiry date",
+      "versionNumber": "Version number",
+      "licenseNumber": "Licence number",
+      "borderEntryNumber": "Border entry number"
+    },
+    "password": {
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password"
+    },
+    "delete": {
+      "title": "Delete account",
+      "body": "Your account and all your data will be permanently deleted. This can’t be undone.",
+      "confirm": "Yes, delete my account",
+      "cancel": "Cancel"
+    }
+  }
+}
