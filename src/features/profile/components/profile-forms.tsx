@@ -107,13 +107,13 @@ export function BasicForm({ profile }: { profile: Profile }) {
 
   const onSubmit = handleSubmit((v) =>
     // Refresh so the header picks up a changed name.
-    mutation.mutate({ ...v, date_of_birth: dmyToIso(v.date_of_birth) }, { onSuccess: () => router.refresh() }),
+    mutation.mutate({ type: profile.type || undefined, ...v, date_of_birth: dmyToIso(v.date_of_birth) }, { onSuccess: () => router.refresh() }),
   );
 
   return (
     <FormShell onSubmit={onSubmit} mutation={mutation}>
       <Item><TextField label={t("name")} autoComplete="name" error={fieldError(errors.name?.message) ?? server.name} {...register("name")} /></Item>
-      <Item><TextField label={t("email")} type="email" dir="ltr" autoComplete="email" error={fieldError(errors.email?.message) ?? server.email} {...register("email")} /></Item>
+      <Item><TextField label={t("email")} type="email" autoComplete="email" error={fieldError(errors.email?.message) ?? server.email} {...register("email")} /></Item>
       <Item><DmyController control={control} name="date_of_birth" label={t("dob")} error={fieldError(errors.date_of_birth?.message) ?? server.date_of_birth} /></Item>
     </FormShell>
   );
@@ -150,13 +150,12 @@ export function LicenseForm({ profile }: { profile: Profile }) {
   const server = serverErrors(mutation.error);
   return (
     <FormShell
-      onSubmit={handleSubmit((v) => mutation.mutate({ ...v, license_expiry_date: dmyToIso(v.license_expiry_date) }))}
+      onSubmit={handleSubmit((v) => mutation.mutate({ type: profile.type || undefined, ...v, license_expiry_date: dmyToIso(v.license_expiry_date) }))}
       mutation={mutation}
     >
       <Item>
         <TextField
           label={t("number")}
-          dir="ltr"
           placeholder={t("numberPlaceholder")}
           hint={t("hint")}
           error={fieldError(errors.driving_license_number?.message) ?? server.driving_license_number}
@@ -170,7 +169,7 @@ export function LicenseForm({ profile }: { profile: Profile }) {
 
 /* ---------- Identity (national / resident ID, or visitor details) ---------- */
 export function IdentityForm({ profile }: { profile: Profile }) {
-  return profile.identity_type === "visitor" ? <VisitorIdentity profile={profile} /> : <IdIdentity profile={profile} />;
+  return profile.type === "visitor" ? <VisitorIdentity profile={profile} /> : <IdIdentity profile={profile} />;
 }
 
 function IdIdentity({ profile }: { profile: Profile }) {
@@ -189,13 +188,13 @@ function IdIdentity({ profile }: { profile: Profile }) {
   return (
     <FormShell
       onSubmit={handleSubmit((v) =>
-        mutation.mutate({ type: profile.identity_type ?? "resident_id", ...v, id_number_end_date: dmyToIso(v.id_number_end_date) }),
+        mutation.mutate({ type: profile.type || "resident_id", ...v, id_number_end_date: dmyToIso(v.id_number_end_date) }),
       )}
       mutation={mutation}
     >
-      <Item><TextField label={t("idNumber")} dir="ltr" inputMode="numeric" maxLength={10} placeholder="2XXXXXXXXX" error={fieldError(errors.id_number?.message) ?? server.id_number} {...register("id_number")} /></Item>
+      <Item><TextField label={t("idNumber")} inputMode="numeric" maxLength={10} placeholder="2XXXXXXXXX" error={fieldError(errors.id_number?.message) ?? server.id_number} {...register("id_number")} /></Item>
       <Item><DmyController control={control} name="id_number_end_date" label={t("idEndDate")} error={fieldError(errors.id_number_end_date?.message) ?? server.id_number_end_date} /></Item>
-      <Item><TextField label={t("versionNumber")} dir="ltr" placeholder="32 XXXX" error={fieldError(errors.version_number?.message) ?? server.version_number} {...register("version_number")} /></Item>
+      <Item><TextField label={t("versionNumber")} placeholder="32 XXXX" error={fieldError(errors.version_number?.message) ?? server.version_number} {...register("version_number")} /></Item>
     </FormShell>
   );
 }
@@ -211,8 +210,8 @@ function VisitorIdentity({ profile }: { profile: Profile }) {
   const server = serverErrors(mutation.error);
   return (
     <FormShell onSubmit={handleSubmit((v) => mutation.mutate({ type: "visitor", ...v }))} mutation={mutation}>
-      <Item><TextField label={t("licenseNumber")} dir="ltr" error={fieldError(errors.license_number?.message) ?? server.license_number} {...register("license_number")} /></Item>
-      <Item><TextField label={t("borderEntryNumber")} dir="ltr" inputMode="numeric" error={fieldError(errors.border_entry_number?.message) ?? server.border_entry_number} {...register("border_entry_number")} /></Item>
+      <Item><TextField label={t("licenseNumber")} error={fieldError(errors.license_number?.message) ?? server.license_number} {...register("license_number")} /></Item>
+      <Item><TextField label={t("borderEntryNumber")} inputMode="numeric" error={fieldError(errors.border_entry_number?.message) ?? server.border_entry_number} {...register("border_entry_number")} /></Item>
     </FormShell>
   );
 }

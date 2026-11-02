@@ -7,17 +7,19 @@ import { FleetSlider } from "@/features/home/components/fleet-slider";
 import { Hero } from "@/features/home/components/hero";
 import { SearchBar } from "@/features/home/components/search-bar";
 import { Testimonials } from "@/features/home/components/testimonials";
+import { getHome } from "@/features/home/services/home.service";
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const home = await getHome(locale);
   return (
     <>
       <Hero />
       <SearchBar />
-      <FleetSlider />
+      {home.featuredCars.length > 0 && <FleetSlider cars={home.featuredCars} />}
       <About />
-      <ExploreFleet />
+      {home.categories.length > 0 && <ExploreFleet categories={home.categories} />}
       <Faq />
       <Testimonials />
       <ContactSection />

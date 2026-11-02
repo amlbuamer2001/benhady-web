@@ -74,7 +74,6 @@ function IdForm({
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
       <TextField
         label={t("idNumber")}
-        dir="ltr"
         inputMode="numeric"
         maxLength={10}
         placeholder={t("idPlaceholder")}
@@ -98,7 +97,6 @@ function IdForm({
       />
       <TextField
         label={t("versionNumber")}
-        dir="ltr"
         placeholder={t("versionPlaceholder")}
         error={fieldError(errors.version_number?.message)}
         {...register("version_number")}
@@ -131,14 +129,12 @@ function VisitorForm({
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
       <TextField
         label={t("licenseNumber")}
-        dir="ltr"
         placeholder={t("licensePlaceholder")}
         error={fieldError(errors.license_number?.message)}
         {...register("license_number")}
       />
       <TextField
         label={t("borderEntryNumber")}
-        dir="ltr"
         inputMode="numeric"
         placeholder={t("borderPlaceholder")}
         error={fieldError(errors.border_entry_number?.message)}

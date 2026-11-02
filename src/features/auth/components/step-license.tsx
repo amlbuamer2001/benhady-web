@@ -40,7 +40,6 @@ export function StepLicense({ loading, error, apiError, onBack, onSubmit }: Prop
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
       <TextField
         label={t("drivingLicense")}
-        dir="ltr"
         placeholder={t("drivingPlaceholder")}
         hint={t("drivingHint")}
         error={fieldError(errors.driving_license_number?.message) ?? server.driving_license_number}

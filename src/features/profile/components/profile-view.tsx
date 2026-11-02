@@ -57,12 +57,12 @@ export function ProfileView({ profile, initialTab }: { profile: Profile; initial
   const [mobilePanel, setMobilePanel] = useState(!!initialTab);
 
   const label = (key: ProfileTab) =>
-    key === "identity" ? t(`tabs.identity.${profile.identity_type ?? "resident_id"}`) : t(`tabs.${key}`);
+    key === "identity" ? t(`tabs.identity.${profile.type || "resident_id"}`) : t(`tabs.${key}`);
 
   const verified: Partial<Record<ProfileTab, boolean>> = {
-    phone: !!profile.phone,
-    license: !!profile.driving_license_number,
-    identity: !!(profile.id_number || profile.border_entry_number),
+    phone: !!profile.phone_verified,
+    license: !!profile.licence_verified,
+    identity: !!profile.id_verified,
   };
 
   const open = (key: ProfileTab) => {

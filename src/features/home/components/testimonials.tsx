@@ -71,16 +71,16 @@ export function Testimonials() {
                 whileHover="hover"
                 whileTap="hover"
                 variants={{ hover: { y: -6, rotate: i % 2 ? 1 : -1 } }}
-                className="flex h-full flex-col gap-3 rounded-2xl bg-white p-5 shadow-[0_4px_24px_-10px_rgb(0_0_0_/_0.15)] transition-shadow hover:shadow-[0_18px_40px_-14px_rgb(118_196_25_/_0.5)]"
+                className="flex h-52 flex-col gap-3 rounded-2xl bg-white p-5 shadow-[0_4px_24px_-10px_rgb(0_0_0_/_0.15)] transition-shadow hover:shadow-[0_18px_40px_-14px_rgb(118_196_25_/_0.5)]"
               >
                 <figcaption className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-bold">{item.name}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold">{item.name}</p>
                     <p className="mt-1 text-xs text-muted">{item.date}</p>
                   </div>
-                  <Stars rating={item.rating} label={t("rating", { rating: item.rating })} />
+                  <span className="shrink-0"><Stars rating={item.rating} label={t("rating", { rating: item.rating })} /></span>
                 </figcaption>
-                <blockquote className="text-sm leading-6">{item.text}</blockquote>
+                <blockquote title={item.text} className="line-clamp-4 text-sm leading-6">{item.text}</blockquote>
               </motion.figure>
             </SwiperSlide>
           ))}

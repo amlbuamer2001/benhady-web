@@ -6,11 +6,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { SliderNav, sliderNavigation } from "@/components/ui/slider-nav";
 import { localeDirection, type Locale } from "@/i18n/routing";
-import { fleetCars } from "../data/cars";
+import type { FleetCar } from "../types";
 import { CarCard } from "./car-card";
 import { SectionHeader } from "./section-header";
 
-export function FleetSlider() {
+export function FleetSlider({ cars }: { cars: FleetCar[] }) {
   const t = useTranslations("home.fleet");
   const locale = useLocale() as Locale;
 
@@ -33,14 +33,15 @@ export function FleetSlider() {
             modules={[Navigation, Autoplay, A11y]}
             navigation={sliderNavigation("fleet")}
             autoplay={{ delay: 3500, disableOnInteraction: false, pauseOnMouseEnter: true }}
-            loop
+            loop={cars.length > 5} // loop mode needs more slides than are visible
+            rewind={cars.length <= 5}
             grabCursor
             spaceBetween={20}
             slidesPerView={1.2}
             breakpoints={{ 640: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3.4 }, 1280: { slidesPerView: 4.4 } }}
             className="!overflow-visible !py-4 [&_.swiper-slide]:h-auto"
           >
-            {fleetCars.map((car) => (
+            {cars.map((car) => (
               <SwiperSlide key={car.id}>
                 <CarCard car={car} />
               </SwiperSlide>

@@ -1,11 +1,11 @@
 "use client";
 import { motion, type Variants } from "motion/react";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ArrowIcon } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
 import { routes } from "@/config/site";
-import type { FleetCar } from "../data/cars";
+import type { FleetCar } from "../types";
 
 const MotionLink = motion.create(Link);
 
@@ -18,18 +18,17 @@ const specMotion: Variants = {
 
 function Spec({ icon, label, effect }: { icon: string; label: string; effect: "spin" | "bounce" | "wiggle" }) {
   return (
-    <motion.li className="flex items-center gap-1.5" whileHover={effect} whileTap={effect}>
-      <motion.span variants={specMotion} className="inline-flex">
+    <motion.li className="flex min-w-0 items-center gap-1.5" whileHover={effect} whileTap={effect}>
+      <motion.span variants={specMotion} className="inline-flex shrink-0">
         <Image src={icon} alt="" width={16} height={16} className="opacity-70" />
       </motion.span>
-      <span>{label}</span>
+      <span className="truncate">{label}</span>
     </motion.li>
   );
 }
 
 export function CarCard({ car }: { car: FleetCar }) {
   const t = useTranslations("home.fleet");
-  const locale = useLocale() as "ar" | "en";
 
   return (
     <motion.article
@@ -38,11 +37,11 @@ export function CarCard({ car }: { car: FleetCar }) {
       whileTap="hover"
       variants={{ rest: { y: 0 }, hover: { y: -8 } }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="flex h-full flex-col gap-3 rounded-3xl bg-white p-3 shadow-[0_4px_24px_-8px_rgb(0_0_0_/_0.12)] transition-shadow hover:shadow-[0_18px_40px_-12px_rgb(118_196_25_/_0.45)]"
+      className="flex h-80 flex-col gap-3 rounded-3xl bg-white p-3 shadow-[0_4px_24px_-8px_rgb(0_0_0_/_0.12)] transition-shadow hover:shadow-[0_18px_40px_-12px_rgb(118_196_25_/_0.45)]"
     >
-      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-ink">
+      <div className="relative h-44 shrink-0 overflow-hidden rounded-2xl bg-ink">
         <motion.div className="absolute inset-0" variants={{ rest: { scale: 1 }, hover: { scale: 1.08 } }} transition={{ duration: 0.5 }}>
-          <Image src={car.image} alt={car.name[locale]} fill sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 85vw" className="object-cover" />
+          <Image src={car.image} alt={car.name} fill sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 85vw" className="object-cover" />
         </motion.div>
         <motion.span
           aria-hidden
@@ -53,18 +52,20 @@ export function CarCard({ car }: { car: FleetCar }) {
       </div>
 
       <div className="flex items-center justify-between gap-2 px-1">
-        <h3 className="truncate text-base font-bold">{car.name[locale]}</h3>
-        <motion.span
-          className="shrink-0 rounded-md bg-primary-100 px-2 py-0.5 text-xs font-bold text-primary"
-          variants={{ rest: { scale: 1 }, hover: { scale: [1, 1.15, 1] } }}
-        >
-          {car.year}
-        </motion.span>
+        <h3 title={car.name} className="truncate text-base font-bold">{car.name}</h3>
+        {car.year && (
+          <motion.span
+            className="shrink-0 rounded-md bg-primary-100 px-2 py-0.5 text-xs font-bold text-primary"
+            variants={{ rest: { scale: 1 }, hover: { scale: [1, 1.15, 1] } }}
+          >
+            {car.year}
+          </motion.span>
+        )}
       </div>
 
-      <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-xs text-muted">
-        <Spec icon="/icons/automatic.svg" label={t("automatic")} effect="spin" />
-        <Spec icon="/icons/fuel.svg" label={t("fuel")} effect="bounce" />
+      <ul className="flex items-center gap-4 overflow-hidden px-1 text-xs text-muted">
+        <Spec icon="/icons/automatic.svg" label={car.transmission ?? t("automatic")} effect="spin" />
+        <Spec icon="/icons/fuel.svg" label={car.fuel ?? t("fuel")} effect="bounce" />
         <Spec icon="/icons/seets.svg" label={t("seats", { count: car.seats })} effect="wiggle" />
       </ul>
 

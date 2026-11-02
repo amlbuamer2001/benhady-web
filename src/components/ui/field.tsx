@@ -90,7 +90,6 @@ export function PasswordField({ label, error, hint, ...input }: BaseFieldProps) 
     <FieldShell id={id} label={label} error={error} hint={hint}>
       <Input
         id={id}
-        dir="ltr"
         type={visible ? "text" : "password"}
         invalid={!!error}
         aria-describedby={error || hint ? `${id}-msg` : undefined}
@@ -111,12 +110,12 @@ export function PasswordField({ label, error, hint, ...input }: BaseFieldProps) 
   );
 }
 
-/** Country code pill is always on the left (matches the design in both languages). */
+/** Country code pill sits at the start edge: right in Arabic, left in English. */
 export function PhoneField({ label, error, hint, ...input }: BaseFieldProps) {
   const id = useId();
   return (
     <FieldShell id={id} label={label} error={error} hint={hint}>
-      <div dir="ltr" className="flex gap-2">
+      <div className="flex gap-2">
         <div className="flex h-12 shrink-0 items-center gap-2 rounded-full border border-line bg-field px-4 text-sm text-ink">
           <SaudiFlag />
           <span>+966</span>
@@ -148,7 +147,6 @@ export function DateField({ label, error, hint, value, onChange, ...input }: Dat
     <FieldShell id={id} label={label} error={error} hint={hint}>
       <Input
         id={id}
-        dir="ltr"
         inputMode="numeric"
         autoComplete="off"
         value={value}

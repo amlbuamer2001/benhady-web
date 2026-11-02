@@ -43,7 +43,6 @@ export function ForgotPasswordForm() {
         <PhoneField
           label={t("phone")}
           placeholder="05 XXXX XXX"
-          dir="ltr"
           error={fieldError(errors.phone?.message)}
           {...register("phone")}
         />

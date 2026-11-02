@@ -22,13 +22,16 @@ export default async function Page({ params, searchParams }: PageProps<"/[locale
   const session = await getSession();
   if (!session) return redirect({ href: routes.login, locale });
 
-  // ASSUMPTION: `GET profile` returns the full user (see features/profile/types.ts).
-  let profile: Profile;
+  // Keep the page usable if the endpoint is unavailable; forms start empty.
+  const fallback: Profile = { id: session.user?.id ?? 0, name: session.user?.name ?? "", email: "", phone: "", date_of_birth: "", type: "", status: "" };
+  let profile = fallback;
   try {
-    profile = (await serverFetch<Profile>("profile", { locale, auth: true, revalidate: false })).data;
-  } catch {
-    // Keep the page usable if the endpoint is unavailable; forms start empty.
-    profile = { id: session.user?.id ?? 0, name: session.user?.name ?? "", email: "", phone: "", date_of_birth: "", type: "", status: "" };
+    // The docs nest the user under `data.user`, but the live backend returns it as `data` itself: accept both.
+    const { data } = await serverFetch<{ user?: Profile } | Profile | null>("auth/me", { locale, auth: true, revalidate: false });
+    const user = data && "user" in data ? data.user : (data as Profile | null);
+    if (user?.id) profile = { ...fallback, ...user };
+  } catch (error) {
+    console.error("[profile] auth/me failed:", error);
   }
 
   const { tab } = await searchParams;

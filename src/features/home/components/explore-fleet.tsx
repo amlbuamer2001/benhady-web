@@ -9,21 +9,12 @@ import { SliderNav, sliderNavigation } from "@/components/ui/slider-nav";
 import { Link } from "@/i18n/navigation";
 import { localeDirection, type Locale } from "@/i18n/routing";
 import { routes } from "@/config/site";
+import type { FleetCategory } from "../types";
 import { SectionHeader } from "./section-header";
-
-const categories = [
-  { key: "luxury", logo: "/icons/bmw-logo.svg" },
-  { key: "scooter", logo: "/icons/toyota-logo.svg" },
-  { key: "motorbike", logo: "/icons/honda-logo.svg" },
-  { key: "sedan", logo: "/icons/hyundai-logo.svg" },
-  { key: "suv", logo: "/icons/nissan-logo.svg" },
-  { key: "saloon", logo: "/icons/tesla-logo.svg" },
-  { key: "pickup", logo: "/icons/toyota-logo.svg" },
-] as const;
 
 const MotionLink = motion.create(Link);
 
-export function ExploreFleet() {
+export function ExploreFleet({ categories }: { categories: FleetCategory[] }) {
   const t = useTranslations("home.explore");
   const locale = useLocale() as Locale;
 
@@ -48,9 +39,9 @@ export function ExploreFleet() {
           className="!overflow-visible !py-3"
         >
           {categories.map((c, i) => (
-            <SwiperSlide key={c.key}>
+            <SwiperSlide key={c.id}>
               <MotionLink
-                href={{ pathname: routes.cars, query: { category: c.key } }}
+                href={{ pathname: routes.cars, query: { category: c.id } }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -63,10 +54,9 @@ export function ExploreFleet() {
                   className="grid size-12 place-items-center"
                   variants={{ hover: { rotateY: 360, scale: 1.15, transition: { duration: 0.6 } } }}
                 >
-                  <Image src={c.logo} alt="" width={40} height={40} className="h-10 w-auto" />
+                  {c.icon && <Image src={c.icon} alt="" width={40} height={40} className="h-10 w-auto" />}
                 </motion.span>
-                <span className="text-sm font-bold">{t(`items.${c.key}.name`)}</span>
-                <span className="text-xs text-muted">{t(`items.${c.key}.desc`)}</span>
+                <span className="text-sm font-bold">{c.name}</span>
               </MotionLink>
             </SwiperSlide>
           ))}

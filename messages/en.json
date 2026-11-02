@@ -198,37 +198,7 @@
     "explore": {
       "title": "Explore our fleet",
       "prev": "Previous",
-      "next": "Next",
-      "items": {
-        "luxury": {
-          "name": "Luxury cars",
-          "desc": "Top brands"
-        },
-        "scooter": {
-          "name": "Scooter",
-          "desc": "Quick rides"
-        },
-        "motorbike": {
-          "name": "Motorbike",
-          "desc": "Motorcycles"
-        },
-        "sedan": {
-          "name": "Sedan",
-          "desc": "Comfort & class"
-        },
-        "suv": {
-          "name": "4x4",
-          "desc": "Four-wheel drive"
-        },
-        "saloon": {
-          "name": "Saloon",
-          "desc": "Family cars"
-        },
-        "pickup": {
-          "name": "Pickup",
-          "desc": "Light trucks"
-        }
-      }
+      "next": "Next"
     },
     "faq": {
       "title": "Frequently asked questions",

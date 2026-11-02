@@ -95,7 +95,7 @@ export function ContactSection() {
         <h2 className="text-2xl font-bold text-primary">{t("formTitle")}</h2>
         <div className="grid gap-5 sm:grid-cols-2">
           <TextField label={t("name")} placeholder={t("namePlaceholder")} autoComplete="name" error={fieldError(errors.name?.message)} {...register("name")} />
-          <TextField label={t("emailLabel")} type="email" dir="ltr" placeholder={t("emailPlaceholder")} autoComplete="email" error={fieldError(errors.email?.message)} {...register("email")} />
+          <TextField label={t("emailLabel")} type="email" placeholder={t("emailPlaceholder")} autoComplete="email" error={fieldError(errors.email?.message)} {...register("email")} />
         </div>
         <FieldShell id={typeId} label={t("type")}>
           <div className="relative">

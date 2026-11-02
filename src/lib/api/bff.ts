@@ -51,7 +51,7 @@ function toFormData(json: Record<string, unknown>): FormData {
 
 interface ForwardOptions {
   path: string;
-  method?: "GET" | "POST" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "DELETE";
   /** Bearer token to send; omit for public endpoints. */
   token?: string;
   /** Send the JSON body from the browser as multipart/form-data. */
@@ -70,7 +70,7 @@ export async function forward(request: Request, { path, method = "POST", token, 
   if (token) headers.Authorization = `Bearer ${token}`;
 
   let body: BodyInit | undefined;
-  if (method === "POST") {
+  if (method === "POST" || method === "PUT") {
     const raw = await request.text();
     let json: Record<string, unknown> = {};
     try {
@@ -79,6 +79,11 @@ export async function forward(request: Request, { path, method = "POST", token, 
       return { ok: false, response: failure(400) };
     }
     if (multipart) {
+      // PHP doesn't parse multipart bodies on PUT, so spoof the method on a POST instead.
+      if (method === "PUT") {
+        json._method = "PUT";
+        method = "POST";
+      }
       body = toFormData(json); // fetch sets the multipart boundary header itself
     } else {
       headers["Content-Type"] = "application/json";

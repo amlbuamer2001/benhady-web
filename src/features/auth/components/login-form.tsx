@@ -40,7 +40,6 @@ export function LoginForm({ notice }: { notice?: "reset" }) {
         {notice === "reset" && <FormAlert tone="success" message={t("resetSuccess")} />}
         <TextField
           label={t("identifier")}
-          dir="ltr"
           inputMode="numeric"
           autoComplete="username"
           placeholder={t("identifierPlaceholder")}

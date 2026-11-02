@@ -40,7 +40,6 @@ export function StepPersonal({ defaults, loading, error, onSubmit }: Props) {
       <TextField
         label={t("email")}
         type="email"
-        dir="ltr"
         autoComplete="email"
         placeholder={t("emailPlaceholder")}
         error={fieldError(errors.email?.message)}
@@ -48,7 +47,6 @@ export function StepPersonal({ defaults, loading, error, onSubmit }: Props) {
       />
       <PhoneField
         label={t("phone")}
-        dir="ltr"
         placeholder={t("phonePlaceholder")}
         error={fieldError(errors.phone?.message)}
         {...register("phone")}
