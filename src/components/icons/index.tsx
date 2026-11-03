@@ -109,3 +109,15 @@ export const TrashIcon = (p: IconProps) => (
 export const SteeringIcon = (p: IconProps) => (
   <svg {...base} {...p}><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="2" /><path d="M3.500 10h6M14.500 10h6M12 14v7" /></svg>
 );
+export const FingerprintIcon = (p: IconProps) => (
+  <svg {...base} {...p}><path d="M12 11v3a8 8 0 0 1-1.500 4.700M8.500 14a3.500 3.500 0 0 1 7 0c0 2.500-.6 4.800-1.700 6.700" /><path d="M5 15.500V12a7 7 0 0 1 12.400-4.500M19 12v2c0 1.700-.3 3.300-.8 4.800" /><path d="M7.500 5.200A9 9 0 0 1 20.500 9" /></svg>
+);
+export const RocketIcon = (p: IconProps) => (
+  <svg {...base} {...p}><path d="M5 15c-1.500 1.200-2 4-2 6 2 0 4.800-.5 6-2" /><path d="M9 18 6 15c.8-3 2.500-6 5-8.500C13.500 4 17 3 21 3c0 4-1 7.500-3.500 10-2.500 2.500-5.500 4.200-8.500 5Z" /><circle cx="15" cy="9" r="1.500" /></svg>
+);
+export const ShieldIcon = (p: IconProps) => (
+  <svg {...base} {...p}><path d="M12 3 4.500 6v5.500c0 4.500 3.200 8.200 7.500 9.500 4.300-1.300 7.500-5 7.500-9.500V6Z" /><path d="m9 12 2 2 4-4" /></svg>
+);
+export const AwardIcon = (p: IconProps) => (
+  <svg {...base} {...p}><circle cx="12" cy="9" r="6" /><path d="m8.500 14-1.500 7 5-3 5 3-1.500-7" /></svg>
+);

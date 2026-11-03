@@ -13,6 +13,7 @@ export async function Footer() {
     { label: nav("about"), href: navLinks[1].href },
     { label: nav("contact"), href: navLinks[3].href },
     { label: t("terms"), href: routes.terms },
+    { label: t("privacy"), href: routes.privacy },
   ];
 
   return (

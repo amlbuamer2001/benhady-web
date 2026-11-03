@@ -48,43 +48,45 @@ export function Testimonials() {
           <SliderNav name="reviews" />
         </SectionHeader>
 
-        <Swiper
-          key={locale}
-          dir={localeDirection[locale]}
-          modules={[Navigation, Autoplay, A11y]}
-          navigation={sliderNavigation("reviews")}
-          autoplay={{ delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true }}
-          rewind // too few slides for loop mode at wide breakpoints
-          grabCursor
-          spaceBetween={20}
-          slidesPerView={1.1}
-          breakpoints={{ 768: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3.2 } }}
-          className="!overflow-visible !py-4 [&_.swiper-slide]:h-auto"
-        >
-          {items.map((item, i) => (
-            <SwiperSlide key={item.name}>
-              <motion.figure
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover="hover"
-                whileTap="hover"
-                variants={{ hover: { y: -6, rotate: i % 2 ? 1 : -1 } }}
-                className="flex h-52 flex-col gap-3 rounded-2xl bg-white p-5 shadow-[0_4px_24px_-10px_rgb(0_0_0_/_0.15)] transition-shadow hover:shadow-[0_18px_40px_-14px_rgb(118_196_25_/_0.5)]"
-              >
-                <figcaption className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold">{item.name}</p>
-                    <p className="mt-1 text-xs text-muted">{item.date}</p>
-                  </div>
-                  <span className="shrink-0"><Stars rating={item.rating} label={t("rating", { rating: item.rating })} /></span>
-                </figcaption>
-                <blockquote title={item.text} className="line-clamp-4 text-sm leading-6">{item.text}</blockquote>
-              </motion.figure>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="edge-fade">
+          <Swiper
+            key={locale}
+            dir={localeDirection[locale]}
+            modules={[Navigation, Autoplay, A11y]}
+            navigation={sliderNavigation("reviews")}
+            autoplay={{ delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true }}
+            rewind // too few slides for loop mode at wide breakpoints
+            grabCursor
+            spaceBetween={20}
+            slidesPerView={1.1}
+            breakpoints={{ 768: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3.2 } }}
+            className="!overflow-visible !py-4 [&_.swiper-slide]:h-auto"
+          >
+            {items.map((item, i) => (
+              <SwiperSlide key={item.name}>
+                <motion.figure
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover="hover"
+                  whileTap="hover"
+                  variants={{ hover: { y: -6, rotate: i % 2 ? 1 : -1 } }}
+                  className="flex h-52 flex-col gap-3 rounded-2xl bg-white p-5 shadow-[0_4px_24px_-10px_rgb(0_0_0_/_0.15)] transition-shadow hover:shadow-[0_18px_40px_-14px_rgb(118_196_25_/_0.5)]"
+                >
+                  <figcaption className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold">{item.name}</p>
+                      <p className="mt-1 text-xs text-muted">{item.date}</p>
+                    </div>
+                    <span className="shrink-0"><Stars rating={item.rating} label={t("rating", { rating: item.rating })} /></span>
+                  </figcaption>
+                  <blockquote title={item.text} className="line-clamp-4 text-sm leading-6">{item.text}</blockquote>
+                </motion.figure>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </section>
   );

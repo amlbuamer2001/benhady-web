@@ -56,7 +56,7 @@ export function CarCard({ car }: { car: FleetCar }) {
         {car.year && (
           <motion.span
             className="shrink-0 rounded-md bg-primary-100 px-2 py-0.5 text-xs font-bold text-primary"
-            variants={{ rest: { scale: 1 }, hover: { scale: [1, 1.15, 1] } }}
+            variants={{ rest: { scale: 1 }, hover: { scale: [1, 1.15, 1], transition: { duration: 0.4 } } }}
           >
             {car.year}
           </motion.span>

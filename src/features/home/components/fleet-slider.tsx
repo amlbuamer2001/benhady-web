@@ -27,26 +27,28 @@ export function FleetSlider({ cars }: { cars: FleetCar[] }) {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ type: "spring", stiffness: 70, damping: 18 }}
         >
-          <Swiper
-            key={locale} // direction can't change after init
-            dir={localeDirection[locale]}
-            modules={[Navigation, Autoplay, A11y]}
-            navigation={sliderNavigation("fleet")}
-            autoplay={{ delay: 3500, disableOnInteraction: false, pauseOnMouseEnter: true }}
-            loop={cars.length > 5} // loop mode needs more slides than are visible
-            rewind={cars.length <= 5}
-            grabCursor
-            spaceBetween={20}
-            slidesPerView={1.2}
-            breakpoints={{ 640: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3.4 }, 1280: { slidesPerView: 4.4 } }}
-            className="!overflow-visible !py-4 [&_.swiper-slide]:h-auto"
-          >
-            {cars.map((car) => (
-              <SwiperSlide key={car.id}>
-                <CarCard car={car} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <div className="edge-fade">
+            <Swiper
+              key={locale} // direction can't change after init
+              dir={localeDirection[locale]}
+              modules={[Navigation, Autoplay, A11y]}
+              navigation={sliderNavigation("fleet")}
+              autoplay={{ delay: 3500, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              loop={cars.length > 5} // loop mode needs more slides than are visible
+              rewind={cars.length <= 5}
+              grabCursor
+              spaceBetween={20}
+              slidesPerView={1.2}
+              breakpoints={{ 640: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3.4 }, 1280: { slidesPerView: 4.4 } }}
+              className="!overflow-visible !py-4 [&_.swiper-slide]:h-auto"
+            >
+              {cars.map((car) => (
+                <SwiperSlide key={car.id}>
+                  <CarCard car={car} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </motion.div>
       </div>
     </section>

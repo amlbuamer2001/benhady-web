@@ -30,6 +30,7 @@ export const routes = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   terms: "/terms",
+  privacy: "/privacy",
   cars: "/cars",
   booking: "/booking",
   profile: "/profile",

@@ -87,3 +87,54 @@ a, button, [role="button"], label, summary {
 /* Scroll-reveal elements start translated sideways; never let them widen the page.
    `clip` (unlike `hidden`) keeps the sticky header working. */
 html, body { overflow-x: clip; }
+
+/* Slider sections: stretch to the full viewport width and fade both edges to transparent.
+   A mask (not a colored overlay) so it works on any section background. */
+.edge-fade {
+  --fade: clamp(24px, 8vw, 160px);
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+  /* Room for hover lift and shadows, which the mask would otherwise cut off. */
+  margin-block: -1.5rem;
+  padding-block: 1.5rem;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+}
+
+/* ---------- Branches map pins ---------- */
+.branch-pin {
+  position: relative;
+  width: 44px;
+  height: 54px;
+  transform-origin: 50% 100%;
+  animation: pin-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.branch-pin__head {
+  position: absolute;
+  inset: 0 0 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid var(--color-primary);
+  box-shadow: 0 8px 18px -6px rgb(0 0 0 / 0.35);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* The pin's tail. */
+.branch-pin__head::after {
+  content: "";
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  translate: -50% 0;
+  border: 7px solid transparent;
+  border-top: 9px solid var(--color-primary);
+}
+.branch-pin__head img { width: 26px; height: auto; }
+.branch-pin:hover .branch-pin__head { transform: translateY(-6px) scale(1.12); }
+@keyframes pin-drop {
+  from { opacity: 0; transform: translateY(-40px) scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+.leaflet-container { font-family: var(--font-sans); background: var(--color-primary-50); }
+.leaflet-popup-content-wrapper { border-radius: 1rem; }

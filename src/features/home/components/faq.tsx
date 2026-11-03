@@ -44,13 +44,14 @@ export function Faq() {
                 onClick={() => setOpen(isOpen ? null : key)}
                 whileHover="hover"
                 whileTap={{ scale: 0.99 }}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start text-sm font-bold"
+                className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-start text-sm font-bold"
               >
                 <motion.span className="inline-block ltr:origin-left rtl:origin-right" variants={{ hover: { scale: 1.03 } }}>{t(`items.${key}.q`)}</motion.span>
                 <motion.span
                   animate={{ rotate: isOpen ? 180 : 0 }}
-                  variants={{ hover: { y: [0, 3, 0] } }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                  // Springs only take two keyframes: the hover bounce gets its own tween.
+                  variants={{ hover: { y: [0, 3, 0], transition: { duration: 0.4, ease: "easeInOut" } } }}
+                  transition={{ rotate: { type: "spring", stiffness: 260, damping: 18 } }}
                   className={isOpen ? "text-primary" : "text-ink"}
                 >
                   <ChevronDownIcon />

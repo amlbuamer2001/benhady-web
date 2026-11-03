@@ -15,19 +15,14 @@ export function NavLink({ href, className, children, ...rest }: Props) {
       <Link
         href={href}
         aria-current={active ? "page" : undefined}
-        className={cn("py-1 transition-colors hover:text-primary", active ? "text-primary" : "text-ink", className)}
+        className={cn("transition-colors hover:text-primary", active ? "text-primary" : "text-ink", className)}
         {...rest}
       >
-        <motion.span className="inline-block" variants={{ rest: { y: 0 }, hover: { y: -2 } }}>
+        <motion.span className="inline-block">
           {children}
         </motion.span>
       </Link>
-      <motion.span
-        aria-hidden
-        className="absolute inset-x-0 -bottom-0.5 h-0.5 origin-center rounded-full bg-primary"
-        variants={{ rest: { scaleX: 0 }, hover: { scaleX: 1 } }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      />
+ 
     </motion.span>
   );
 }

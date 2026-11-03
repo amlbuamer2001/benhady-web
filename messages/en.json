@@ -51,7 +51,8 @@
     "contactUs": "Contact us",
     "terms": "Terms and conditions",
     "address": "King Khalid International Airport, Riyadh, Saudi Arabia",
-    "rights": "All rights reserved - Bin Hadi Company {year} ©"
+    "rights": "All rights reserved - Bin Hadi Company {year} ©",
+    "privacy": "Privacy policy"
   },
   "validation": {
     "required": "This field is required",
@@ -336,5 +337,126 @@
       "confirm": "Yes, delete my account",
       "cancel": "Cancel"
     }
+  },
+  "aboutPage": {
+    "heroTitle": "About us",
+    "metaDescription": "Meet Bin Hadi Car Rental: a journey since 1400 AH, a fleet of more than 4,000 cars and 16 branches across the Kingdom.",
+    "eyebrow": "About us",
+    "title": "A journey of non-stop growth",
+    "body": "Since 1400 AH, Bin Hadi has taken great strides to become one of the leading car rental companies in Saudi Arabia. We are proud to serve nearly seventy thousand valued customers, and every day we strive to deliver the best service through a team committed to the highest standards of performance and professionalism.",
+    "imageAlt": "A blue sports car from the Bin Hadi fleet",
+    "imageSmAlt": "A Mercedes from the Bin Hadi fleet",
+    "satisfaction": "Customer satisfaction",
+    "features": {
+      "fleet": {
+        "title": "A diverse fleet",
+        "body": "A wide range of luxury and economy cars for every need, with plenty of options to match your expectations."
+      },
+      "support": {
+        "title": "24/7 customer service",
+        "body": "A dedicated support team around the clock, ready to help at any time with fast answers to every question."
+      },
+      "branches": {
+        "title": "Branches everywhere",
+        "body": "16 branches across the Kingdom’s regions and international airports, so we’re always close to you."
+      }
+    },
+    "stats": {
+      "label": "Bin Hadi in numbers",
+      "years": "years of excellence",
+      "cars": "cars available",
+      "branches": "branches in the Kingdom",
+      "customers": "valued customers"
+    },
+    "values": {
+      "title": "Our values",
+      "subtitle": "We hold ourselves to the highest standards of quality and trust",
+      "transparency": {
+        "title": "Transparency",
+        "body": "Clear contracts and transparent prices with no hidden fees, plus a dedicated team to answer all your questions"
+      },
+      "safety": {
+        "title": "Safety",
+        "body": "Comprehensive insurance and guarantees covering accidents and theft for peace of mind throughout your rental"
+      },
+      "speed": {
+        "title": "Speed",
+        "body": "A fast, easy booking process on our website or at our branches across the Kingdom"
+      },
+      "satisfaction": {
+        "title": "Customer satisfaction",
+        "body": "Our customers come first, and we work hard to earn their satisfaction with exceptional service"
+      }
+    }
+  },
+  "contactPage": {
+    "heroTitle": "Contact us",
+    "metaDescription": "Reach Bin Hadi Car Rental by phone, email or WhatsApp, or visit your nearest branch.",
+    "mapLabel": "Map of Bin Hadi branches",
+    "branches": "Our branches"
+  },
+  "faqPage": {
+    "heroTitle": "FAQ",
+    "metaDescription": "Answers to the most common questions about renting a car with Bin Hadi: booking, insurance, branches and payment."
+  },
+  "branches": {
+    "riyadh": "King Khalid International Airport – Riyadh",
+    "jeddah": "King Abdulaziz International Airport – Jeddah",
+    "medina": "Prince Mohammad bin Abdulaziz Airport – Medina",
+    "dammam": "King Fahd International Airport – Dammam",
+    "layla": "Layla branch – Al-Aflaj",
+    "abha": "Abha International Airport – Abha"
+  },
+  "legal": {
+    "terms": {
+      "heroTitle": "Terms & conditions",
+      "metaDescription": "Terms and conditions for using Bin Hadi Car Rental services.",
+      "sections": [
+        {
+          "title": "Clause 1",
+          "paragraphs": [
+            "We place the utmost importance on the privacy of your data. Personal information such as your name, mobile number and email is collected to improve your experience and provide the requested services accurately and professionally. We use advanced encryption to protect your data from any breach or unauthorised access, in line with internationally recognised cybersecurity standards.",
+            "You may at any time request the correction or deletion of your personal data, or unsubscribe from email services, by contacting our support team by email or through your account dashboard. We may update this policy periodically, so we recommend reviewing it regularly to stay informed of the latest changes in how we handle and protect your personal information."
+          ]
+        },
+        {
+          "title": "Clause 2",
+          "paragraphs": [
+            "Your personal data is used to provide the services and products you request, improve the user experience and tailor content to your interests, and contact you about updates and exclusive offers after obtaining your prior consent. We also use data for statistical analysis and performance improvement by studying usage patterns and visitor behaviour, without linking these analyses to your direct personal identity.",
+            "We do not share your personal data with third parties except when it is necessary to provide the service, provided those parties adhere to the same protection standards, or when disclosure is required by a court order or applicable law in the Kingdom of Saudi Arabia. In all cases, data is transferred over secure, fully encrypted channels in accordance with personal data protection regulations.",
+            "We use cookies to improve site performance and remember your preferences on future visits. You can control cookie settings from your browser at any time, or block them entirely, although this may affect some site features. For more information on how we use cookies, contact our support team, available around the clock to answer all your questions."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "heroTitle": "Privacy policy",
+      "metaDescription": "How Bin Hadi Car Rental collects, uses and protects your personal data.",
+      "sections": [
+        {
+          "title": "Privacy policy",
+          "paragraphs": [
+            "We place the utmost importance on the privacy of your data. Personal information such as your name, mobile number and email is collected to improve your experience and provide the requested services accurately and professionally. We use advanced encryption to protect your data from any breach or unauthorised access, in line with internationally recognised cybersecurity standards.",
+            "You may at any time request the correction or deletion of your personal data, or unsubscribe from email services, by contacting our support team by email or through your account dashboard. We may update this policy periodically, so we recommend reviewing it regularly to stay informed of the latest changes in how we handle and protect your personal information."
+          ]
+        },
+        {
+          "title": "How we use information",
+          "paragraphs": [
+            "Your personal data is used to provide the services and products you request, improve the user experience and tailor content to your interests, and contact you about updates and exclusive offers after obtaining your prior consent. We also use data for statistical analysis and performance improvement by studying usage patterns and visitor behaviour, without linking these analyses to your direct personal identity.",
+            "We do not share your personal data with third parties except when it is necessary to provide the service, provided those parties adhere to the same protection standards, or when disclosure is required by a court order or applicable law in the Kingdom of Saudi Arabia. In all cases, data is transferred over secure, fully encrypted channels in accordance with personal data protection regulations.",
+            "We use cookies to improve site performance and remember your preferences on future visits. You can control cookie settings from your browser at any time, or block them entirely, although this may affect some site features. For more information on how we use cookies, contact our support team, available around the clock to answer all your questions."
+          ]
+        }
+      ]
+    }
+  },
+  "notifications": {
+    "heroTitle": "Notifications",
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "unread": "Unread",
+    "empty": "No notifications yet",
+    "emptyHint": "We’ll let you know here about your bookings and offers"
   }
 }
