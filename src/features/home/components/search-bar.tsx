@@ -5,6 +5,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { CalendarIcon, ClockIcon, PinIcon, SearchIcon } from "@/components/icons";
 import { useRouter } from "@/i18n/navigation";
 import { routes } from "@/config/site";
+import type { FilterOption } from "@/features/cars/types";
 
 interface FieldProps {
   id: string;
@@ -36,7 +37,7 @@ function SearchField({ id, label, icon, children }: FieldProps) {
 
 const inputClass = "min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted";
 
-export function SearchBar() {
+export function SearchBar({ cities }: { cities: FilterOption[] }) {
   const t = useTranslations("home.search");
   const router = useRouter();
   const [city, setCity] = useState("");
@@ -45,7 +46,8 @@ export function SearchBar() {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const query = Object.fromEntries(Object.entries({ city, date, time }).filter(([, v]) => v));
+    // Param names match the cars page filters (and the backend). Time isn't a filter yet, but is kept for the booking step.
+    const query = Object.fromEntries(Object.entries({ city_id: city, pickup_date: date, pickup_time: time }).filter(([, v]) => v));
     router.push({ pathname: routes.cars, query });
   };
 
@@ -60,7 +62,14 @@ export function SearchBar() {
     >
       <form onSubmit={onSubmit} className="flex flex-col gap-4 md:flex-row md:items-end">
         <SearchField id="search-city" label={t("city")} icon={<PinIcon />}>
-          <input id="search-city" value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("cityPlaceholder")} className={inputClass} />
+          <select id="search-city" value={city} onChange={(e) => setCity(e.target.value)} className={`${inputClass} cursor-pointer appearance-none ${city ? "" : "text-muted"}`}>
+            <option value="">{t("cityPlaceholder")}</option>
+            {cities.map((c) => (
+              <option key={c.id} value={c.id} className="text-ink">
+                {c.name}
+              </option>
+            ))}
+          </select>
         </SearchField>
         <SearchField id="search-date" label={t("date")} icon={<CalendarIcon />}>
           <input id="search-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label={t("datePlaceholder")} className={inputClass} />
