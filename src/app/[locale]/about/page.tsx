@@ -6,7 +6,7 @@ import { PageHero } from "@/components/layout/page-hero";
 import { Reveal } from "@/components/ui/reveal";
 import { AboutGallery } from "@/features/about/components/about-gallery";
 import { CountUp } from "@/features/about/components/count-up";
-import { HoverCard } from "@/features/about/components/hover-card";
+import { HoverCard } from "@/components/ui/hover-card";
 import { Testimonials } from "@/features/home/components/testimonials";
 import { buildMetadata } from "@/lib/seo";
 

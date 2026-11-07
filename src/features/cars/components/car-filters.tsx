@@ -1,10 +1,11 @@
 "use client";
 import { AnimatePresence, motion, type PanInfo } from "motion/react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { CalendarIcon, ChevronDownIcon, CloseIcon, SearchIcon, UserIcon } from "@/components/icons";
 import { cn } from "@/lib/cn";
-import { carFilterKeys, type CarFilterOptions, type CarFilters as Filters, type FilterOption } from "../types";
+import { carFilterKeys, nonFilterKeys, type CarFilterOptions, type CarFilters as Filters, type FilterOption } from "../types";
 import { useCarsNav } from "./cars-shell";
 
 const fieldClass =
@@ -115,6 +116,11 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
       )}
 
       <Field label={t("city")}>{(id) => <Select id={id} value={values.city_id} onChange={set("city_id")} options={options.cities} placeholder={t("choose")} />}</Field>
+      {options.categories.length > 0 && (
+        <Field label={t("category")}>
+          {(id) => <Select id={id} value={values.category_id} onChange={set("category_id")} options={options.categories} placeholder={t("category")} />}
+        </Field>
+      )}
       <Field label={t("pickupDate")}>
         {(id) => (
           <WithIcon icon={<CalendarIcon />}>
@@ -159,6 +165,27 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
           </WithIcon>
         )}
       </Field>
+      <motion.fieldset variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="flex flex-col gap-2">
+        <legend className="mb-2 text-xs font-bold">{t("price")}</legend>
+        <div className="grid grid-cols-2 gap-2">
+          {(["min_price", "max_price"] as const).map((key) => (
+            <div key={key} className="relative">
+              <input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                step={10}
+                aria-label={`${t("price")} – ${t(key === "min_price" ? "priceMin" : "priceMax")}`}
+                value={values[key] ?? ""}
+                onChange={(e) => set(key)(e.target.value)}
+                placeholder={t(key === "min_price" ? "priceMin" : "priceMax")}
+                className={cn(fieldClass, "pe-9")}
+              />
+              <Image src="/icons/KsaSymbol.svg" alt="" width={11} height={13} className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 opacity-60" />
+            </div>
+          ))}
+        </div>
+      </motion.fieldset>
 
       <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="mt-2 flex flex-col items-center gap-3">
         <motion.button
@@ -260,7 +287,7 @@ function MobileSearchBar({ initial, active, onOpenFilters }: { initial: Filters;
 export function CarFilters({ options, initial }: { options: CarFilterOptions; initial: Filters }) {
   const t = useTranslations("carsPage");
   const [open, setOpen] = useState(false);
-  const active = carFilterKeys.filter((k) => k !== "search" && initial[k]).length;
+  const active = carFilterKeys.filter((k) => !nonFilterKeys.includes(k) && initial[k]).length;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";

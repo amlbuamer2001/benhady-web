@@ -486,6 +486,62 @@
     "next": "Next page",
     "page": "Page {page}",
     "close": "Close",
-    "activeFilters": "{count} active filters"
+    "activeFilters": "{count} active filters",
+    "category": "Category",
+    "price": "Daily price",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "sort": "Sort by",
+    "sortDefault": "Default",
+    "sortOptions": {
+      "newest": "Newest",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low"
+    }
+  },
+  "carDetails": {
+    "gallery": "Car photos",
+    "imageOf": "Photo {n} of {total}",
+    "prevImage": "Previous photo",
+    "nextImage": "Next photo",
+    "showImage": "Show photo {n}",
+    "description": "Description",
+    "features": "Features",
+    "branches": "Branches where this car is available",
+    "viewLocation": "View location",
+    "callBranch": "Call branch",
+    "dailyPrice": "Daily rental price",
+    "perDay": "/ day",
+    "currency": "Saudi riyal",
+    "bookNow": "Book now",
+    "unavailable": "Currently unavailable",
+    "similar": "Similar cars",
+    "policies": {
+      "renter": {
+        "title": "Renter instructions",
+        "items": [
+          "Bring your national ID or iqama and a valid driving licence at pick-up",
+          "Inspect the car with branch staff and record its condition before pick-up",
+          "Return the car on time with the same fuel level"
+        ]
+      },
+      "insurance": {
+        "title": "Insurance policy",
+        "items": [
+          "The car is insured under the terms of the rental contract",
+          "Report any accident or damage to the branch immediately",
+          "Coverage details and the deductible are stated in the contract"
+        ]
+      },
+      "cancellation": {
+        "title": "Cancellation policy",
+        "items": [
+          "You can cancel or change your booking from My bookings",
+          "Cancellation fees follow the booking terms",
+          "Questions? Customer service is available around the clock"
+        ]
+      }
+    },
+    "seats": "{count} seats"
   }
 }

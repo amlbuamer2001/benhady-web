@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { CarFilters } from "@/features/cars/components/car-filters";
 import { CarsPagination } from "@/features/cars/components/cars-pagination";
 import { CarsResults, CarsShell } from "@/features/cars/components/cars-shell";
+import { CarsSort } from "@/features/cars/components/cars-sort";
 import { getCarFilterOptions, getCars } from "@/features/cars/services/cars.service";
 import { carFilterKeys, type CarFilters as Filters } from "@/features/cars/types";
 import { CarCard } from "@/features/home/components/car-card";
@@ -40,7 +41,10 @@ export default async function CarsPage({ params, searchParams }: PageProps<"/[lo
 
           <CarsResults>
             {result.total > 0 && (
-              <p className="mb-4 text-sm text-ink/75">{t("showing", { count: result.count, total: result.total })}</p>
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm text-ink/75">{t("showing", { count: result.count, total: result.total })}</p>
+                <CarsSort filters={filters} />
+              </div>
             )}
 
             {result.cars.length > 0 ? (

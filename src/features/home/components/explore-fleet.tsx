@@ -42,7 +42,7 @@ export function ExploreFleet({ categories }: { categories: FleetCategory[] }) {
             {categories.map((c, i) => (
               <SwiperSlide key={c.id}>
                 <MotionLink
-                  href={{ pathname: routes.cars, query: { category: c.id } }}
+                  href={{ pathname: routes.cars, query: { category_id: c.id } }}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
