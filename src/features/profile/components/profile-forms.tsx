@@ -19,7 +19,7 @@ import {
   basicSchema,
   changePasswordSchema,
   drivingLicenseSchema,
-  idIdentitySchema,
+  idIdentitySchemaFor,
   phoneSchema,
   visitorIdentitySchema,
   type BasicForm as BasicValues,
@@ -126,11 +126,12 @@ export function PhoneForm({ profile }: { profile: Profile }) {
   const mutation = useUpdatePhone();
   const { register, handleSubmit, formState: { errors } } = useForm<PhoneValues>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phone: profile.phone?.replace(/^966/, "") ?? "" },
+    // API sends 9665XXXXXXXX; the field expects the local 05XXXXXXXX form.
+    defaultValues: { phone: profile.phone ? profile.phone.replace(/^966/, "0") : "" },
   });
   return (
     <FormShell onSubmit={handleSubmit(({ phone }) => mutation.mutate(toApiPhone(phone)))} mutation={mutation}>
-      <Item><PhoneField label={t("label")} placeholder="5X XXX XXXX" error={fieldError(errors.phone?.message) ?? serverErrors(mutation.error).phone} {...register("phone")} /></Item>
+      <Item><PhoneField label={t("label")} placeholder="05 XXXX XXX" error={fieldError(errors.phone?.message) ?? serverErrors(mutation.error).phone} {...register("phone")} /></Item>
     </FormShell>
   );
 }
@@ -176,8 +177,9 @@ function IdIdentity({ profile }: { profile: Profile }) {
   const t = useTranslations("profile.identity");
   const fieldError = useFieldError();
   const mutation = useUpdateIdentity();
+  const idType = profile.type === "national_id" ? "national_id" : "resident_id";
   const { register, control, handleSubmit, formState: { errors } } = useForm<IdIdentityForm>({
-    resolver: zodResolver(idIdentitySchema),
+    resolver: zodResolver(idIdentitySchemaFor(idType)),
     defaultValues: {
       id_number: profile.id_number ?? "",
       id_number_end_date: isoToDmy(profile.id_number_end_date),
@@ -188,13 +190,13 @@ function IdIdentity({ profile }: { profile: Profile }) {
   return (
     <FormShell
       onSubmit={handleSubmit((v) =>
-        mutation.mutate({ type: profile.type || "resident_id", ...v, id_number_end_date: dmyToIso(v.id_number_end_date) }),
+        mutation.mutate({ type: idType, ...v, id_number_end_date: dmyToIso(v.id_number_end_date) }),
       )}
       mutation={mutation}
     >
-      <Item><TextField label={t("idNumber")} inputMode="numeric" maxLength={10} placeholder="2XXXXXXXXX" error={fieldError(errors.id_number?.message) ?? server.id_number} {...register("id_number")} /></Item>
+      <Item><TextField label={t("idNumber")} inputMode="numeric" maxLength={10} placeholder={idType === "national_id" ? "1XXXXXXXXX" : "2XXXXXXXXX"} error={fieldError(errors.id_number?.message) ?? server.id_number} {...register("id_number")} /></Item>
       <Item><DmyController control={control} name="id_number_end_date" minDate={startOfDay(1)} label={t("idEndDate")} error={fieldError(errors.id_number_end_date?.message) ?? server.id_number_end_date} /></Item>
-      <Item><TextField label={t("versionNumber")} placeholder="32 XXXX" error={fieldError(errors.version_number?.message) ?? server.version_number} {...register("version_number")} /></Item>
+      <Item><TextField label={t("versionNumber")} inputMode="numeric" maxLength={2} placeholder="XX" error={fieldError(errors.version_number?.message) ?? server.version_number} {...register("version_number")} /></Item>
     </FormShell>
   );
 }

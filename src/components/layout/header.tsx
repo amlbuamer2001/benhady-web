@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { ChatIcon, ChevronEndIcon, HelpIcon, InfoIcon } from "@/components/icons";
+import { ChatIcon, ChevronEndIcon, ContractIcon, HelpIcon, InfoIcon, WalletIcon } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
 import { buttonClasses } from "@/components/ui/button";
 import { navLinks, routes } from "@/config/site";
@@ -110,6 +110,15 @@ export async function Header() {
               </div>
             )}
           </SheetItem>
+
+          {session && (
+            <SheetItem>
+              <div className="divide-y divide-line overflow-hidden rounded-3xl border border-line">
+                <SheetRow href={routes.contracts} icon={<ContractIcon />} label={t("contracts")} />
+                <SheetRow href={routes.wallet} icon={<WalletIcon />} label={t("wallet")} />
+              </div>
+            </SheetItem>
+          )}
 
           <SheetItem>
             <div className="divide-y divide-line overflow-hidden rounded-3xl border border-line">

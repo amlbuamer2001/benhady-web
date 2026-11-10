@@ -45,13 +45,6 @@ export const CloseIcon = (p: IconProps) => (
 export const CheckIcon = (p: IconProps) => (
   <svg {...base} strokeWidth={3} {...p}><path d="m5 12.5 4.5 4.5L19 7.500" /></svg>
 );
-export const SaudiFlag = (p: IconProps) => (
-  <svg width="28" height="19" viewBox="0 0 28 19" aria-hidden {...p}>
-    <rect width="28" height="19" rx="3" fill="#006C35" />
-    <rect x="7" y="12" width="14" height="1.6" rx=".8" fill="#fff" />
-    <rect x="9" y="6" width="10" height="2" rx="1" fill="#fff" opacity=".9" />
-  </svg>
-);
 export const ChevronDownIcon = (p: IconProps) => (
   <svg {...base} strokeWidth={2.2} {...p}><path d="m6 9 6 6 6-6" /></svg>
 );
@@ -90,6 +83,12 @@ export const HelpIcon = (p: IconProps) => (
 );
 export const ChatIcon = (p: IconProps) => (
   <svg {...base} {...p}><path d="M21 12a8 8 0 0 1-11.600 7.100L4 20l1-4.600A8 8 0 1 1 21 12Z" /></svg>
+);
+export const ContractIcon = (p: IconProps) => (
+  <svg {...base} {...p}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>
+);
+export const WalletIcon = (p: IconProps) => (
+  <svg {...base} {...p}><path d="M19 7V5.500A1.500 1.500 0 0 0 17.500 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H5" /><path d="M17 14h.01" /></svg>
 );
 export const LogoutIcon = (p: IconProps) => (
   <svg {...base} {...p}><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 8l-4 4 4 4M6 12h10" /></svg>

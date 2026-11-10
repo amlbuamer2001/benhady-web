@@ -12,7 +12,8 @@ import { useApiErrorMessage } from "../hooks/use-api-error-message";
 import { useRegisterStepOne, useRegisterStepTwo } from "../hooks/use-auth";
 import { clearAuthFlow, readAuthFlow, saveAuthFlow } from "../lib/auth-flow";
 import { buildRegisterPayload, type IdentityDraft } from "../lib/register-payload";
-import type { PasswordForm, PersonalForm } from "../schemas/auth.schemas";
+import { errorsForStep, firstStepWithError, serverFieldErrors, type RegisterStep } from "../lib/register-errors";
+import type { LicenseForm, PasswordForm, PersonalForm } from "../schemas/auth.schemas";
 import type { IdentityType } from "../types";
 import { StepIdentity } from "./step-identity";
 import { StepLicense } from "./step-license";
@@ -35,17 +36,41 @@ export function RegisterWizard() {
   const [personal, setPersonal] = useState<PersonalForm>();
   const [identityType, setIdentityType] = useState<IdentityType>("national_id");
   const [identity, setIdentity] = useState<IdentityDraft>();
+  // Kept in memory only – passwords are never written to storage.
   const [password, setPassword] = useState<PasswordForm>();
+  const [license, setLicense] = useState<Partial<LicenseForm>>();
+  const [editingPhone, setEditingPhone] = useState(false);
 
-  // Resume at step 2 after the OTP screen verified the phone.
+  // Coming back to the page (from the OTP screen, terms, browser back…): restore everything typed.
   useEffect(() => {
     const flow = readAuthFlow();
-    if (flow?.flow === "register" && flow.verified) {
-      setVerifiedPhone(flow.phone);
-      setStep(2);
+    if (flow?.flow === "register") {
+      if (flow.personal) setPersonal(flow.personal);
+      if (flow.verified) {
+        setVerifiedPhone(flow.phone);
+        const draft = flow.draft;
+        if (draft) {
+          setIdentityType(draft.identityType);
+          setIdentity(draft.identity);
+          setLicense(draft.license);
+        }
+        // The password wasn't saved, so anything past step 3 resumes at the password step.
+        setStep(draft ? (Math.min(draft.step, 3) as Step) : 2);
+      } else if (flow.editingPhone) {
+        setEditingPhone(true);
+        saveAuthFlow({ ...flow, editingPhone: false });
+      }
     }
     setReady(true);
   }, []);
+
+  // Save progress on every change once the phone is verified.
+  useEffect(() => {
+    if (!ready || !verifiedPhone) return;
+    const flow = readAuthFlow();
+    if (flow?.flow !== "register") return;
+    saveAuthFlow({ ...flow, draft: { step, identityType, identity, license } });
+  }, [ready, verifiedPhone, step, identityType, identity, license]);
 
   const submitPersonal = (values: PersonalForm) => {
     const phone = toApiPhone(values.phone);
@@ -56,7 +81,7 @@ export function RegisterWizard() {
       { name: values.name, email: values.email, phone, date_of_birth: dmyToIso(values.date_of_birth) },
       {
         onSuccess: () => {
-          saveAuthFlow({ flow: "register", phone, verified: false });
+          saveAuthFlow({ flow: "register", phone, verified: false, personal: values });
           router.push(routes.verifyPhone);
         },
       },
@@ -71,8 +96,19 @@ export function RegisterWizard() {
         router.replace(routes.home);
         router.refresh();
       },
+      // A problem with a field from an earlier step: go back there so it can be fixed.
+      onError: (error) => {
+        const target = firstStepWithError(serverFieldErrors(error));
+        if (target) setStep(target);
+      },
     });
   };
+
+  // Server errors, per field and per step. A message that matches no field stays a general alert.
+  const stepOneErrors = serverFieldErrors(stepOne.error);
+  const stepTwoErrors = serverFieldErrors(stepTwo.error);
+  const errorsAt = (s: RegisterStep) => ({ ...errorsForStep(stepTwoErrors, s), ...(s === 1 ? errorsForStep(stepOneErrors, 1) : {}) });
+  const generalError = (error: unknown, fields: object) => (Object.keys(fields).length ? undefined : errorMessage(error));
 
   const heading =
     step === 1 || step === 2 || step === 3 ? { title: t(`step${step}.title`), subtitle: t(`step${step}.subtitle`) } : null;
@@ -100,7 +136,9 @@ export function RegisterWizard() {
                 <StepPersonal
                   defaults={personal}
                   loading={stepOne.isPending}
-                  error={errorMessage(stepOne.error)}
+                  error={generalError(stepOne.error, stepOneErrors)}
+                  serverErrors={errorsAt(1)}
+                  focusPhone={editingPhone}
                   onSubmit={submitPersonal}
                 />
               )}
@@ -109,6 +147,8 @@ export function RegisterWizard() {
                   type={identityType}
                   onTypeChange={setIdentityType}
                   draft={identity}
+                  onDraftChange={setIdentity}
+                  serverErrors={errorsAt(2)}
                   onBack={() => setStep(1)}
                   onSubmit={(v) => {
                     setIdentity(v);
@@ -119,6 +159,7 @@ export function RegisterWizard() {
               {step === 3 && (
                 <StepPassword
                   defaults={password}
+                  serverErrors={errorsAt(3)}
                   onBack={() => setStep(2)}
                   onSubmit={(v) => {
                     setPassword(v);
@@ -129,8 +170,10 @@ export function RegisterWizard() {
               {step === 4 && (
                 <StepLicense
                   loading={stepTwo.isPending}
-                  error={errorMessage(stepTwo.error)}
-                  apiError={stepTwo.error}
+                  error={generalError(stepTwo.error, stepTwoErrors)}
+                  serverErrors={errorsAt(4)}
+                  defaults={license}
+                  onDraftChange={setLicense}
                   onBack={() => setStep(3)}
                   onSubmit={submitLicense}
                 />

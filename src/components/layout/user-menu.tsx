@@ -8,7 +8,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useLogout } from "@/features/auth/hooks/use-auth";
 import { routes } from "@/config/site";
 
-/** Avatar + name trigger with an animated dropdown (profile, bookings, logout). */
+/** Avatar + name trigger with an animated dropdown (profile, bookings, contracts, wallet, logout). */
 export function UserMenu({ name }: { name: string }) {
   const t = useTranslations("nav");
   const router = useRouter();
@@ -31,6 +31,8 @@ export function UserMenu({ name }: { name: string }) {
   const items = [
     { href: routes.profile, label: t("profile") },
     { href: routes.bookings, label: t("bookings") },
+    { href: routes.contracts, label: t("contracts") },
+    { href: routes.wallet, label: t("wallet") },
   ];
 
   return (
@@ -85,7 +87,7 @@ export function UserMenu({ name }: { name: string }) {
               disabled={isPending}
               initial={{ opacity: 0, x: 8 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.12 }}
+              transition={{ delay: 0.04 * (items.length + 1) }}
               onClick={() =>
                 mutate(undefined, {
                   onSettled: () => {

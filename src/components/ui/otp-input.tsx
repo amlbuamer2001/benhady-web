@@ -1,5 +1,5 @@
 "use client";
-import { useRef, type ClipboardEvent, type KeyboardEvent } from "react";
+import { useEffect, useRef, type ClipboardEvent, type KeyboardEvent } from "react";
 import { cn } from "@/lib/cn";
 
 interface OtpInputProps {
@@ -8,13 +8,21 @@ interface OtpInputProps {
   length?: number;
   label: string;
   invalid?: boolean;
+  /** Focus the first empty box when the input appears (opens the keyboard on phones). */
+  autoFocus?: boolean;
 }
 
-export function OtpInput({ value, onChange, length = 4, label, invalid }: OtpInputProps) {
+export function OtpInput({ value, onChange, length = 4, label, invalid, autoFocus }: OtpInputProps) {
   const refs = useRef<Array<HTMLInputElement | null>>([]);
   const digits = Array.from({ length }, (_, i) => value[i] ?? "");
 
   const focusAt = (i: number) => refs.current[Math.min(Math.max(i, 0), length - 1)]?.focus();
+
+  // Done after mount rather than with the HTML attribute, which React skips after hydration.
+  useEffect(() => {
+    if (autoFocus) focusAt(value.length);
+    // Only on mount.
+  }, []);
 
   const setDigit = (i: number, digit: string) => {
     const next = digits.slice();

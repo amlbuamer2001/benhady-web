@@ -13,7 +13,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { formatApiPhone } from "@/lib/phone";
 import { useApiErrorMessage } from "../hooks/use-api-error-message";
 import { useResendOtp, useVerifyPhone } from "../hooks/use-auth";
-import { clearAuthFlow, readAuthFlow, saveAuthFlow, type AuthFlow } from "../lib/auth-flow";
+import { readAuthFlow, saveAuthFlow, type AuthFlow } from "../lib/auth-flow";
 import { otpSchema, type OtpForm } from "../schemas/auth.schemas";
 
 const RESEND_SECONDS = 60;
@@ -74,10 +74,10 @@ export function VerifyPhoneForm() {
   return (
     <AuthCard title={flow.flow === "register" ? t("titleRegister") : t("titleReset")} subtitle={t("subtitle")}>
       <div className="-mt-6 mb-8 flex items-center justify-center gap-3 text-xs">
-        <span dir="ltr" className="font-bold">
+        <span dir="ltr" className="font-bold text-primary">
           {formatApiPhone(flow.phone)}
         </span>
-        <Link href={editHref} onClick={() => clearAuthFlow()} className="text-primary underline">
+        <Link href={editHref} onClick={() => saveAuthFlow({ ...flow, verified: false, editingPhone: true })} className="text-primary underline underline-offset-4 transition-colors hover:text-primary-hover">
           {t("edit")}
         </Link>
       </div>
@@ -87,7 +87,7 @@ export function VerifyPhoneForm() {
           control={control}
           name="code"
           render={({ field }) => (
-            <OtpInput label={t("codeLabel")} value={field.value} onChange={field.onChange} invalid={!!errors.code} />
+            <OtpInput autoFocus label={t("codeLabel")} value={field.value} onChange={field.onChange} invalid={!!errors.code} />
           )}
         />
         {errors.code && (
@@ -97,6 +97,9 @@ export function VerifyPhoneForm() {
         )}
 
         <div className="flex items-center justify-between text-[11px] text-muted">
+           <span dir="ltr" aria-live="off">
+            {secondsLeft > 0 ? formatTimer(secondsLeft) : ""}
+          </span>
           <button
             type="button"
             onClick={onResend}
@@ -105,9 +108,7 @@ export function VerifyPhoneForm() {
           >
             {t("resend")}
           </button>
-          <span dir="ltr" aria-live="off">
-            {secondsLeft > 0 ? formatTimer(secondsLeft) : ""}
-          </span>
+        
         </div>
 
         <FormAlert message={errorMessage(verify.error ?? resend.error)} />

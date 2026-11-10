@@ -27,7 +27,8 @@ export const loginSchema = z.object({
 export type LoginForm = z.infer<typeof loginSchema>;
 
 export const phoneSchema = z.object({
-  phone: z.string().min(1, required).regex(/^0?5\d{8}$/, "phoneInvalid"),
+  // Same rule as the mobile app: starts with 05 and is exactly 10 digits.
+  phone: z.string().min(1, required).regex(/^05\d{8}$/, "phoneInvalid"),
 });
 export type PhoneForm = z.infer<typeof phoneSchema>;
 
@@ -55,8 +56,17 @@ export type PersonalForm = z.infer<typeof personalSchema>;
 export const idIdentitySchema = z.object({
   id_number: tenDigits,
   id_number_end_date: futureDmyDate,
-  version_number: z.string().trim().min(1, required),
+  version_number: z.string().trim().min(1, required).max(2, "versionMax"),
 });
+
+/** Saudi IDs: national IDs start with 1, residence (Iqama) IDs with 2 – both 10 digits. */
+export const idPrefix = { national_id: "1", resident_id: "2" } as const;
+export type IdType = keyof typeof idPrefix;
+
+export const idIdentitySchemaFor = (type: IdType) =>
+  idIdentitySchema.extend({
+    id_number: tenDigits.refine((v) => v.startsWith(idPrefix[type]), type === "national_id" ? "idStartsNational" : "idStartsResident"),
+  });
 export type IdIdentityForm = z.infer<typeof idIdentitySchema>;
 
 export const visitorIdentitySchema = z.object({

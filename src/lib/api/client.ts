@@ -1,5 +1,5 @@
 import axios from "axios";
-import { toApiError } from "./api-error";
+import { envelopeError, toApiError } from "./api-error";
 import type { ApiResponse } from "./types";
 
 /**
@@ -18,7 +18,12 @@ http.interceptors.request.use((config) => {
 });
 
 http.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // The backend can answer HTTP 200 while the envelope says it failed (e.g. code 422 + errors.email).
+    const body = response.data as Partial<ApiResponse<unknown>> | undefined;
+    if (typeof body?.code === "number" && body.code >= 400) return Promise.reject(envelopeError(body, body.code));
+    return response;
+  },
   (error) => Promise.reject(toApiError(error)),
 );
 

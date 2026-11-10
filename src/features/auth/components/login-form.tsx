@@ -54,7 +54,7 @@ export function LoginForm({ notice }: { notice?: "reset" }) {
             error={fieldError(errors.password?.message)}
             {...register("password")}
           />
-          <Link href={routes.forgotPassword} className="w-fit text-[11px] text-danger underline">
+          <Link href={routes.forgotPassword} className="w-fit self-end text-[11px] text-danger underline">
             {t("forgot")}
           </Link>
         </div>

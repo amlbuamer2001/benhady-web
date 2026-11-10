@@ -55,7 +55,9 @@
     "guestTitle": "أهلاً بك في بن هادي",
     "guestSubtitle": "سجّل دخولك لإدارة حجوزاتك بسهولة",
     "viewProfile": "عرض الملف الشخصي",
-    "language": "اللغة"
+    "language": "اللغة",
+    "contracts": "عقودي",
+    "wallet": "المحفظة"
   },
   "footer": {
     "description": "مسيرة تنموية لا تتوقف ... نقدم خدمات تأجير سيارات متميزة بأسطول يضم أكثر من ٤ آلاف سيارة و ١٦ فرعاً في جميع أنحاء المملكة .",
@@ -70,7 +72,7 @@
     "required": "هذا الحقل مطلوب",
     "nameMin": "الاسم يجب ألا يقل عن 3 أحرف",
     "emailInvalid": "البريد الإلكتروني غير صحيح",
-    "phoneInvalid": "رقم الجوال غير صحيح، مثال: 05XXXXXXXX",
+    "phoneInvalid": "رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام",
     "dateInvalid": "التاريخ غير صحيح، الصيغة DD/MM/YYYY",
     "dateFuture": "يجب أن يكون التاريخ في المستقبل",
     "minAge": "يجب ألا يقل العمر عن 21 سنة",
@@ -81,7 +83,10 @@
     "otpIncomplete": "أدخل رمز التحقق كاملاً",
     "termsRequired": "يجب الموافقة على الشروط والأحكام",
     "messageMin": "الرسالة يجب ألا تقل عن 10 أحرف",
-    "nameFull": "أدخل الاسم الكامل كما في الهوية (اسمين على الأقل)"
+    "nameFull": "أدخل الاسم الكامل كما في الهوية (اسمين على الأقل)",
+    "idStartsNational": "رقم الهوية الوطنية يجب أن يبدأ بـ 1 ويتكون من 10 أرقام",
+    "idStartsResident": "رقم هوية المقيم يجب أن يبدأ بـ 2 ويتكون من 10 أرقام",
+    "versionMax": "رقم النسخة لا يزيد عن رقمين"
   },
   "auth": {
     "login": {
@@ -121,10 +126,9 @@
         "resident_id": "هوية مقيم",
         "visitor": "زائر",
         "idNumber": "رقم الهوية",
-        "idPlaceholder": "2XXXXXXXXX",
         "idEndDate": "تاريخ انتهاء الهوية",
         "versionNumber": "رقم النسخة",
-        "versionPlaceholder": "32 XXXX",
+        "versionPlaceholder": "XX",
         "licenseNumber": "رقم الرخصة",
         "licensePlaceholder": "2XXXXXXXXX",
         "borderEntryNumber": "رقم دخول الحدود",

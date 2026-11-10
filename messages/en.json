@@ -55,7 +55,9 @@
     "guestTitle": "Welcome to Bin Hadi",
     "guestSubtitle": "Log in to manage your bookings easily",
     "viewProfile": "View profile",
-    "language": "Language"
+    "language": "Language",
+    "contracts": "My contracts",
+    "wallet": "Wallet"
   },
   "footer": {
     "description": "A journey of non-stop growth ... Premium car rental services with a fleet of more than 4,000 cars and 16 branches across the Kingdom.",
@@ -70,7 +72,7 @@
     "required": "This field is required",
     "nameMin": "Name must be at least 3 characters",
     "emailInvalid": "Enter a valid email address",
-    "phoneInvalid": "Enter a valid mobile number, e.g. 05XXXXXXXX",
+    "phoneInvalid": "Mobile number must start with 05 and be 10 digits",
     "dateInvalid": "Enter a valid date as DD/MM/YYYY",
     "dateFuture": "The date must be in the future",
     "minAge": "You must be at least 21 years old",
@@ -81,7 +83,10 @@
     "otpIncomplete": "Enter the full verification code",
     "termsRequired": "You must accept the terms and conditions",
     "messageMin": "Message must be at least 10 characters",
-    "nameFull": "Enter your full name as on your ID (at least two names)"
+    "nameFull": "Enter your full name as on your ID (at least two names)",
+    "idStartsNational": "National ID must start with 1 and be 10 digits",
+    "idStartsResident": "Residence ID must start with 2 and be 10 digits",
+    "versionMax": "Version number can't be more than 2 digits"
   },
   "auth": {
     "login": {
@@ -121,10 +126,9 @@
         "resident_id": "Resident ID",
         "visitor": "Visitor",
         "idNumber": "ID number",
-        "idPlaceholder": "2XXXXXXXXX",
         "idEndDate": "ID expiry date",
         "versionNumber": "Version number",
-        "versionPlaceholder": "32 XXXX",
+        "versionPlaceholder": "XX",
         "licenseNumber": "License number",
         "licensePlaceholder": "2XXXXXXXXX",
         "borderEntryNumber": "Border entry number",

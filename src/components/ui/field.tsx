@@ -2,7 +2,8 @@
 import { useId, useState, type InputHTMLAttributes, type ReactNode, type Ref, type TextareaHTMLAttributes } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/cn";
-import { CalendarIcon, CloseIcon, EyeIcon, EyeOffIcon, SaudiFlag, SearchIcon } from "@/components/icons";
+import Image from "next/image";
+import { CalendarIcon, CloseIcon, EyeIcon, EyeOffIcon, SearchIcon } from "@/components/icons";
 import { maskDmy, parseDmy, toDmy } from "@/lib/date";
 import { Calendar } from "./calendar";
 import { PickerFooter } from "./date-picker";
@@ -71,8 +72,10 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function Input({ invalid, start, end, fieldSize, className, wrapperClassName, ref, ...rest }: InputProps) {
-  // Emails are Latin-only: type them left-to-right in a Latin font (still right-aligned on Arabic pages).
-  const latin = rest.type === "email";
+  // Emails and phone numbers are Latin-only: type them left-to-right in a Latin font.
+  // Emails stay right-aligned on Arabic pages; the phone row is fully LTR (see PhoneField).
+  const email = rest.type === "email";
+  const latin = email || rest.type === "tel";
   return (
     <div className={cn(fieldBox({ invalid, size: fieldSize }), "cursor-text", wrapperClassName)}>
       {start && <span className={cn(fieldIcon, "flex")}>{start}</span>}
@@ -82,7 +85,8 @@ export function Input({ invalid, start, end, fieldSize, className, wrapperClassN
         aria-invalid={invalid || undefined}
         className={cn(
           "h-full min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-muted disabled:cursor-not-allowed",
-          latin && "font-latin placeholder:font-sans rtl:text-right",
+          latin && "font-latin",
+          email && "placeholder:font-sans rtl:text-right",
           className,
         )}
         {...rest}
@@ -134,14 +138,14 @@ export function PasswordField({ label, error, hint, icon, ...input }: BaseFieldP
   );
 }
 
-/** Country code pill sits at the start edge: right in Arabic, left in English. */
+/** Phone numbers read left-to-right in both languages: "+966" pill on the left, number typed after it. */
 export function PhoneField({ label, error, hint, ...input }: BaseFieldProps) {
   const id = useId();
   return (
     <FieldShell id={id} label={label} error={error} hint={hint}>
-      <div className="flex gap-2">
+      <div dir="ltr" className="flex gap-2">
         <div dir="ltr" className="flex h-12 shrink-0 items-center gap-2 rounded-full border border-line bg-field px-4 text-sm font-bold text-ink">
-          <SaudiFlag />
+          <Image src="/icons/flag.svg" alt="" width={27} height={18} className="rounded-[3px]" />
           <span>+966</span>
         </div>
         <Input
@@ -149,6 +153,7 @@ export function PhoneField({ label, error, hint, ...input }: BaseFieldProps) {
           type="tel"
           inputMode="tel"
           autoComplete="tel-national"
+          maxLength={10}
           invalid={!!error}
           aria-describedby={describedBy(id, error, hint)}
           wrapperClassName="flex-1"

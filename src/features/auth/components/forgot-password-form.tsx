@@ -1,6 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { AuthCard } from "@/components/layout/auth-card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import { useRouter } from "@/i18n/navigation";
 import { toApiPhone } from "@/lib/phone";
 import { useApiErrorMessage } from "../hooks/use-api-error-message";
 import { useRequestPasswordResetOtp } from "../hooks/use-auth";
-import { saveAuthFlow } from "../lib/auth-flow";
+import { readAuthFlow, saveAuthFlow } from "../lib/auth-flow";
 import { phoneSchema, type PhoneForm } from "../schemas/auth.schemas";
 
 export function ForgotPasswordForm() {
@@ -24,8 +25,19 @@ export function ForgotPasswordForm() {
   const {
     register,
     handleSubmit,
+    reset,
+    setFocus,
     formState: { errors },
   } = useForm<PhoneForm>({ resolver: zodResolver(phoneSchema) });
+
+  // Back from the OTP screen via "edit phone": bring the number back instead of an empty field.
+  useEffect(() => {
+    const flow = readAuthFlow();
+    if (flow?.flow !== "reset" || !flow.editingPhone) return;
+    reset({ phone: flow.phone.replace(/^966/, "0") });
+    saveAuthFlow({ ...flow, editingPhone: false });
+    setTimeout(() => setFocus("phone", { shouldSelect: true }));
+  }, [reset, setFocus]);
 
   const onSubmit = handleSubmit(({ phone }) => {
     const apiPhone = toApiPhone(phone);

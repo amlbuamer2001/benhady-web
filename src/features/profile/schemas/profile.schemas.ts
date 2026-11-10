@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { licenseSchema, passwordSchema, personalSchema } from "@/features/auth/schemas/auth.schemas";
 
-export { idIdentitySchema, phoneSchema, visitorIdentitySchema } from "@/features/auth/schemas/auth.schemas";
+export { idIdentitySchema, idIdentitySchemaFor, phoneSchema, visitorIdentitySchema } from "@/features/auth/schemas/auth.schemas";
 export type { IdIdentityForm, PhoneForm, VisitorIdentityForm } from "@/features/auth/schemas/auth.schemas";
 
 export const basicSchema = personalSchema.omit({ phone: true });
