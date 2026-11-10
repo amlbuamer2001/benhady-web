@@ -31,8 +31,18 @@ export const phoneSchema = z.object({
 });
 export type PhoneForm = z.infer<typeof phoneSchema>;
 
+/** Full name as on the ID: at least two names of 2+ letters each (same rule as the mobile app). */
+const fullName = z
+  .string()
+  .trim()
+  .min(1, "nameFull")
+  .refine((v) => {
+    const parts = v.split(/\s+/);
+    return parts.length >= 2 && parts.every((p) => p.length >= 2);
+  }, "nameFull");
+
 export const personalSchema = z.object({
-  name: z.string().trim().min(3, "nameMin"),
+  name: fullName,
   email: z.string().min(1, required).pipe(z.email("emailInvalid")),
   phone: phoneSchema.shape.phone,
   date_of_birth: dmyDate.refine((v) => {

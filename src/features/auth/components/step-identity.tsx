@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { DateField, TextField } from "@/components/ui/field";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { useFieldError } from "@/hooks/use-field-error";
+import { startOfDay } from "@/lib/date";
 import {
   idIdentitySchema,
   visitorIdentitySchema,
@@ -86,6 +87,7 @@ function IdForm({
         render={({ field }) => (
           <DateField
             label={t("idEndDate")}
+            minDate={startOfDay(1)}
             placeholder="DD/MM/YYYY"
             error={fieldError(errors.id_number_end_date?.message)}
             value={field.value}

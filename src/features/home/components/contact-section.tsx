@@ -4,15 +4,14 @@ import { motion, type TargetAndTransition } from "motion/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
-import { useForm } from "react-hook-form";
-import { ChevronDownIcon } from "@/components/icons";
+import { Controller, useForm } from "react-hook-form";
 import { SocialLinks } from "@/components/layout/social-links";
 import { Button } from "@/components/ui/button";
-import { FieldShell, TextField } from "@/components/ui/field";
+import { FieldShell, TextareaField, TextField } from "@/components/ui/field";
 import { FormAlert } from "@/components/ui/form-alert";
+import { Select } from "@/components/ui/select";
 import { siteConfig } from "@/config/site";
 import { useFieldError } from "@/hooks/use-field-error";
-import { cn } from "@/lib/cn";
 import { contactSchema, inquiryTypes, type ContactForm } from "../schemas/contact.schema";
 
 const tel = (p: string) => `tel:${p.replace(/\s/g, "")}`;
@@ -41,10 +40,10 @@ export function ContactSection() {
   const t = useTranslations("home.contact");
   const fieldError = useFieldError();
   const typeId = useId();
-  const messageId = useId();
   const [sent, setSent] = useState(false);
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
@@ -55,12 +54,6 @@ export function ContactSection() {
     setSent(true);
     reset();
   });
-
-  const fieldClass = (invalid: boolean) =>
-    cn(
-      "w-full rounded-3xl border bg-field px-5 text-sm outline-none transition-shadow focus:ring-2 focus:ring-primary/40",
-      invalid ? "border-danger" : "border-line",
-    );
 
   return (
     <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-8 lg:grid-cols-2">
@@ -98,28 +91,29 @@ export function ContactSection() {
           <TextField label={t("emailLabel")} type="email" placeholder={t("emailPlaceholder")} autoComplete="email" error={fieldError(errors.email?.message)} {...register("email")} />
         </div>
         <FieldShell id={typeId} label={t("type")}>
-          <div className="relative">
-            <select id={typeId} className={cn(fieldClass(false), "h-12 cursor-pointer appearance-none")} {...register("type")}>
-              {inquiryTypes.map((type) => (
-                <option key={type} value={type}>
-                  {t(`types.${type}`)}
-                </option>
-              ))}
-            </select>
-            <ChevronDownIcon className="pointer-events-none absolute end-5 top-1/2 -translate-y-1/2 text-muted" />
-          </div>
-        </FieldShell>
-        <FieldShell id={messageId} label={t("message")} error={fieldError(errors.message?.message)}>
-          <textarea
-            id={messageId}
-            rows={5}
-            placeholder={t("messagePlaceholder")}
-            aria-invalid={!!errors.message || undefined}
-            aria-describedby={errors.message ? `${messageId}-msg` : undefined}
-            className={cn(fieldClass(!!errors.message), "resize-none py-4")}
-            {...register("message", { onChange: () => setSent(false) })}
+          <Controller
+            control={control}
+            name="type"
+            render={({ field }) => (
+              <Select
+                id={typeId}
+                ref={field.ref}
+                name={field.name}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                options={inquiryTypes.map((type) => ({ value: type, label: t(`types.${type}`) }))}
+              />
+            )}
           />
         </FieldShell>
+        <TextareaField
+          label={t("message")}
+          rows={5}
+          placeholder={t("messagePlaceholder")}
+          error={fieldError(errors.message?.message)}
+          {...register("message", { onChange: () => setSent(false) })}
+        />
         {sent && (
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
             <FormAlert tone="success" message={t("success")} />

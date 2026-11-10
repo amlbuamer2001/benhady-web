@@ -3,6 +3,10 @@ import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { CalendarIcon, ClockIcon, PinIcon, SearchIcon } from "@/components/icons";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Select } from "@/components/ui/select";
+import { ClockPicker } from "@/components/ui/clock-picker";
+import { startOfDay } from "@/lib/date";
 import { useRouter } from "@/i18n/navigation";
 import { routes } from "@/config/site";
 import type { FilterOption } from "@/features/cars/types";
@@ -10,32 +14,28 @@ import type { FilterOption } from "@/features/cars/types";
 interface FieldProps {
   id: string;
   label: string;
-  icon: ReactNode;
   children: ReactNode;
 }
 
-/** Labelled pill input whose icon wiggles when the field is hovered or focused. */
-function SearchField({ id, label, icon, children }: FieldProps) {
+/** Labelled field whose icon wiggles when it is hovered, focused or tapped. */
+function SearchField({ id, label, children }: FieldProps) {
   return (
-    <motion.div className="flex flex-1 flex-col gap-2" whileHover="active" whileFocus="active" whileTap="active">
+    <motion.div className="flex min-w-0 flex-1 flex-col gap-2" whileHover="active" whileFocus="active" whileTap="active">
       <label htmlFor={id} className="text-sm font-bold">
         {label}
       </label>
-      <div className="flex h-12 items-center gap-2 rounded-full bg-field px-5 ring-primary/40 transition-shadow focus-within:ring-2">
-        {children}
-        <motion.span
-          className="shrink-0 text-muted"
-          variants={{ active: { rotate: [0, -15, 15, -8, 0], scale: 1.15 } }}
-          transition={{ duration: 0.5 }}
-        >
-          {icon}
-        </motion.span>
-      </div>
+      {children}
     </motion.div>
   );
 }
 
-const inputClass = "min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted";
+function WiggleIcon({ children }: { children: ReactNode }) {
+  return (
+    <motion.span className="flex" variants={{ active: { rotate: [0, -15, 15, -8, 0], scale: 1.15 } }} transition={{ duration: 0.5 }}>
+      {children}
+    </motion.span>
+  );
+}
 
 export function SearchBar({ cities }: { cities: FilterOption[] }) {
   const t = useTranslations("home.search");
@@ -61,21 +61,35 @@ export function SearchBar({ cities }: { cities: FilterOption[] }) {
       className="mx-auto max-w-7xl px-4 py-12 sm:px-8"
     >
       <form onSubmit={onSubmit} className="flex flex-col gap-4 md:flex-row md:items-end">
-        <SearchField id="search-city" label={t("city")} icon={<PinIcon />}>
-          <select id="search-city" value={city} onChange={(e) => setCity(e.target.value)} className={`${inputClass} cursor-pointer appearance-none ${city ? "" : "text-muted"}`}>
-            <option value="">{t("cityPlaceholder")}</option>
-            {cities.map((c) => (
-              <option key={c.id} value={c.id} className="text-ink">
-                {c.name}
-              </option>
-            ))}
-          </select>
+        <SearchField id="search-city" label={t("city")}>
+          <Select
+            id="search-city"
+            value={city}
+            onChange={setCity}
+            clearable
+            placeholder={t("cityPlaceholder")}
+            options={cities.map((c) => ({ value: String(c.id), label: c.name }))}
+            icon={<WiggleIcon><PinIcon /></WiggleIcon>}
+          />
         </SearchField>
-        <SearchField id="search-date" label={t("date")} icon={<CalendarIcon />}>
-          <input id="search-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label={t("datePlaceholder")} className={inputClass} />
+        <SearchField id="search-date" label={t("date")}>
+          <DatePicker
+            id="search-date"
+            value={date}
+            onChange={setDate}
+            minDate={startOfDay()}
+            placeholder={t("datePlaceholder")}
+            icon={<WiggleIcon><CalendarIcon /></WiggleIcon>}
+          />
         </SearchField>
-        <SearchField id="search-time" label={t("time")} icon={<ClockIcon />}>
-          <input id="search-time" type="time" value={time} onChange={(e) => setTime(e.target.value)} aria-label={t("timePlaceholder")} className={inputClass} />
+        <SearchField id="search-time" label={t("time")}>
+          <ClockPicker
+            id="search-time"
+            value={time}
+            onChange={setTime}
+            placeholder={t("timePlaceholder")}
+            icon={<WiggleIcon><ClockIcon /></WiggleIcon>}
+          />
         </SearchField>
         <motion.button
           type="submit"

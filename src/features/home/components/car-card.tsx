@@ -30,14 +30,16 @@ function Spec({ icon, label, effect }: { icon: string; label: string; effect: "s
 export function CarCard({ car }: { car: FleetCar }) {
   const t = useTranslations("home.fleet");
 
+  // The whole card is the link to the car's page.
   return (
-    <motion.article
+    <MotionLink
+      href={`${routes.cars}/${car.id}`}
       initial="rest"
       whileHover="hover"
       whileTap="hover"
       variants={{ rest: { y: 0 }, hover: { y: -8 } }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="flex h-80 flex-col gap-3 rounded-3xl bg-white p-3 shadow-[0_4px_24px_-8px_rgb(0_0_0_/_0.12)] transition-shadow hover:shadow-[0_18px_40px_-12px_rgb(118_196_25_/_0.45)]"
+      className="group/card flex h-80 cursor-pointer flex-col gap-3 rounded-3xl bg-white p-3 text-ink focus-visible:outline-offset-4 shadow-[0_4px_24px_-8px_rgb(0_0_0_/_0.12)] transition-shadow hover:shadow-[0_18px_40px_-12px_rgb(118_196_25_/_0.45)]"
     >
       <div className="relative h-44 shrink-0 overflow-hidden rounded-2xl bg-ink">
         <motion.div className="absolute inset-0" variants={{ rest: { scale: 1 }, hover: { scale: 1.08 } }} transition={{ duration: 0.5 }}>
@@ -75,16 +77,16 @@ export function CarCard({ car }: { car: FleetCar }) {
           <Image src="/icons/KsaSymbol.svg" alt={t("currency")} width={14} height={16} />
           <span className="text-xs text-muted">{t("perDay")}</span>
         </p>
-        <MotionLink
-          href={`${routes.cars}/${car.id}`}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
-          className="group inline-flex h-9 items-center gap-1.5 rounded-full bg-primary px-4 text-xs font-medium text-white"
+        {/* Looks like a button; the card around it is the actual link. */}
+        <motion.span
+          aria-hidden
+          variants={{ rest: { scale: 1 }, hover: { scale: 1.06 } }}
+          className="inline-flex h-9 items-center gap-1.5 rounded-full bg-primary px-4 text-xs font-medium text-white transition-colors group-hover/card:bg-primary-hover"
         >
           {t("details")}
-          <ArrowIcon width={14} height={14} className="transition-transform group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
-        </MotionLink>
+          <ArrowIcon width={14} height={14} className="transition-transform group-hover/card:translate-x-1 rtl:-scale-x-100 rtl:group-hover/card:-translate-x-1" />
+        </motion.span>
       </div>
-    </motion.article>
+    </MotionLink>
   );
 }

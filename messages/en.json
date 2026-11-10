@@ -17,7 +17,19 @@
     "closeMenu": "Close menu",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
-    "comingSoon": "This page is under construction"
+    "comingSoon": "This page is under construction",
+    "clear": "Clear",
+    "today": "Today",
+    "chooseDate": "Choose a date",
+    "chooseTime": "Choose a time",
+    "openCalendar": "Open calendar",
+    "increase": "Increase",
+    "decrease": "Decrease",
+    "noOptions": "No options",
+    "am": "AM",
+    "pm": "PM",
+    "hour": "Hour",
+    "minute": "Minutes"
   },
   "nav": {
     "main": "Main navigation",
@@ -68,7 +80,8 @@
     "passwordMismatch": "Passwords don't match",
     "otpIncomplete": "Enter the full verification code",
     "termsRequired": "You must accept the terms and conditions",
-    "messageMin": "Message must be at least 10 characters"
+    "messageMin": "Message must be at least 10 characters",
+    "nameFull": "Enter your full name as on your ID (at least two names)"
   },
   "auth": {
     "login": {

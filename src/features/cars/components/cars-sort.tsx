@@ -2,7 +2,7 @@
 import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useId } from "react";
-import { ChevronDownIcon } from "@/components/icons";
+import { Select } from "@/components/ui/select";
 import { sortOptions, type CarFilters } from "../types";
 import { useCarsNav } from "./cars-shell";
 
@@ -24,22 +24,15 @@ export function CarsSort({ filters }: { filters: CarFilters }) {
       <label htmlFor={id} className="shrink-0 text-xs font-bold text-ink/75">
         {t("sort")}
       </label>
-      <div className="relative">
-        <select
-          id={id}
-          value={current}
-          onChange={(e) => change(e.target.value)}
-          className="h-10 cursor-pointer appearance-none rounded-full border border-line bg-white pe-9 ps-4 text-xs font-bold outline-none transition-shadow focus:ring-2 focus:ring-primary/40"
-        >
-          <option value="">{t("sortDefault")}</option>
-          {sortOptions.map((o) => (
-            <option key={o.key} value={o.key}>
-              {t(`sortOptions.${o.key}`)}
-            </option>
-          ))}
-        </select>
-        <ChevronDownIcon width={14} height={14} className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-muted" />
-      </div>
+      <Select
+        id={id}
+        value={current}
+        onChange={change}
+        clearable
+        placeholder={t("sortDefault")}
+        options={sortOptions.map((o) => ({ value: o.key, label: t(`sortOptions.${o.key}`) }))}
+        className="h-10 w-auto min-w-40 gap-2 bg-white ps-4 pe-3 text-xs font-bold data-placeholder:text-ink"
+      />
     </motion.div>
   );
 }

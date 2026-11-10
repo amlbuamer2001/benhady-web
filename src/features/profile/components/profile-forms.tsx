@@ -12,7 +12,7 @@ import { useApiErrorMessage } from "@/features/auth/hooks/use-api-error-message"
 import { useFieldError } from "@/hooks/use-field-error";
 import { useRouter } from "@/i18n/navigation";
 import { ApiError } from "@/lib/api/api-error";
-import { dmyToIso, isoToDmy } from "@/lib/date";
+import { dmyToIso, isoToDmy, startOfDay } from "@/lib/date";
 import { toApiPhone } from "@/lib/phone";
 import { useChangePassword, useUpdateIdentity, useUpdateLicense, useUpdatePhone, useUpdateProfile } from "../hooks/use-profile";
 import {
@@ -81,13 +81,13 @@ function serverErrors(error: unknown): Record<string, string> {
   return error instanceof ApiError ? error.fieldErrors : {};
 }
 
-function DmyController<T extends FieldValues>({ control, name, label, error }: { control: Control<T>; name: Path<T>; label: string; error?: string }) {
+function DmyController<T extends FieldValues>({ control, name, label, error, minDate, maxDate }: { control: Control<T>; name: Path<T>; label: string; error?: string; minDate?: Date; maxDate?: Date }) {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field }) => (
-        <DateField label={label} placeholder="DD/MM/YYYY" error={error} value={field.value} onChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
+        <DateField label={label} placeholder="DD/MM/YYYY" error={error} minDate={minDate} maxDate={maxDate} value={field.value} onChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
       )}
     />
   );
@@ -114,7 +114,7 @@ export function BasicForm({ profile }: { profile: Profile }) {
     <FormShell onSubmit={onSubmit} mutation={mutation}>
       <Item><TextField label={t("name")} autoComplete="name" error={fieldError(errors.name?.message) ?? server.name} {...register("name")} /></Item>
       <Item><TextField label={t("email")} type="email" autoComplete="email" error={fieldError(errors.email?.message) ?? server.email} {...register("email")} /></Item>
-      <Item><DmyController control={control} name="date_of_birth" label={t("dob")} error={fieldError(errors.date_of_birth?.message) ?? server.date_of_birth} /></Item>
+      <Item><DmyController control={control} name="date_of_birth" maxDate={startOfDay()} label={t("dob")} error={fieldError(errors.date_of_birth?.message) ?? server.date_of_birth} /></Item>
     </FormShell>
   );
 }
@@ -162,7 +162,7 @@ export function LicenseForm({ profile }: { profile: Profile }) {
           {...register("driving_license_number")}
         />
       </Item>
-      <Item><DmyController control={control} name="license_expiry_date" label={t("expiry")} error={fieldError(errors.license_expiry_date?.message) ?? server.license_expiry_date} /></Item>
+      <Item><DmyController control={control} name="license_expiry_date" minDate={startOfDay(1)} label={t("expiry")} error={fieldError(errors.license_expiry_date?.message) ?? server.license_expiry_date} /></Item>
     </FormShell>
   );
 }
@@ -193,7 +193,7 @@ function IdIdentity({ profile }: { profile: Profile }) {
       mutation={mutation}
     >
       <Item><TextField label={t("idNumber")} inputMode="numeric" maxLength={10} placeholder="2XXXXXXXXX" error={fieldError(errors.id_number?.message) ?? server.id_number} {...register("id_number")} /></Item>
-      <Item><DmyController control={control} name="id_number_end_date" label={t("idEndDate")} error={fieldError(errors.id_number_end_date?.message) ?? server.id_number_end_date} /></Item>
+      <Item><DmyController control={control} name="id_number_end_date" minDate={startOfDay(1)} label={t("idEndDate")} error={fieldError(errors.id_number_end_date?.message) ?? server.id_number_end_date} /></Item>
       <Item><TextField label={t("versionNumber")} placeholder="32 XXXX" error={fieldError(errors.version_number?.message) ?? server.version_number} {...register("version_number")} /></Item>
     </FormShell>
   );

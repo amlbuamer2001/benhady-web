@@ -3,13 +3,13 @@ import { AnimatePresence, motion, type PanInfo } from "motion/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { CalendarIcon, ChevronDownIcon, CloseIcon, SearchIcon, UserIcon } from "@/components/icons";
-import { cn } from "@/lib/cn";
+import { CloseIcon, SearchIcon, UserIcon } from "@/components/icons";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Input, NumberInput, SearchInput } from "@/components/ui/field";
+import { Select as UiSelect } from "@/components/ui/select";
+import { parseIso, startOfDay } from "@/lib/date";
 import { carFilterKeys, nonFilterKeys, type CarFilterOptions, type CarFilters as Filters, type FilterOption } from "../types";
 import { useCarsNav } from "./cars-shell";
-
-const fieldClass =
-  "h-11 w-full rounded-full border border-line bg-field px-4 text-sm outline-none transition-shadow placeholder:text-muted focus:ring-2 focus:ring-primary/40";
 
 function Field({ label, children }: { label: string; children: (id: string) => ReactNode }) {
   const id = useId();
@@ -25,26 +25,15 @@ function Field({ label, children }: { label: string; children: (id: string) => R
 
 function Select({ id, value, onChange, options, placeholder }: { id: string; value?: string; onChange: (v: string) => void; options: FilterOption[]; placeholder: string }) {
   return (
-    <div className="relative">
-      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value)} className={cn(fieldClass, "cursor-pointer appearance-none pe-10", !value && "text-muted")}>
-        <option value="">{placeholder}</option>
-        {options.map((o) => (
-          <option key={o.id} value={o.id} className="text-ink">
-            {o.name}
-          </option>
-        ))}
-      </select>
-      <ChevronDownIcon className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 text-muted" />
-    </div>
-  );
-}
-
-function WithIcon({ icon, children }: { icon: ReactNode; children: ReactNode }) {
-  return (
-    <div className="relative">
-      {children}
-      <span className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 text-muted">{icon}</span>
-    </div>
+    <UiSelect
+      id={id}
+      fieldSize="sm"
+      clearable
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      options={options.map((o) => ({ value: String(o.id), label: o.name }))}
+    />
   );
 }
 
@@ -93,15 +82,14 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
     <motion.form onSubmit={submit} initial="hidden" animate="show" transition={{ staggerChildren: 0.04 }} className="flex flex-col gap-4">
       {showSearch && (
       <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="flex items-center gap-2">
-        <input
+        <SearchInput
           ref={searchRef}
-          type="search"
-          enterKeyHint="search"
+          fieldSize="sm"
           aria-label={t("searchLabel")}
           value={search}
-          onChange={(e) => set("search")(e.target.value)}
+          onChange={set("search")}
           placeholder={t("searchPlaceholder")}
-          className={cn(fieldClass, "flex-1")}
+          wrapperClassName="flex-1"
         />
         <motion.button
           type="submit"
@@ -123,23 +111,19 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
       )}
       <Field label={t("pickupDate")}>
         {(id) => (
-          <WithIcon icon={<CalendarIcon />}>
-            <input id={id} type="date" value={values.pickup_date ?? ""} onChange={(e) => set("pickup_date")(e.target.value)} className={cn(fieldClass, "pe-11")} />
-          </WithIcon>
+          <DatePicker id={id} fieldSize="sm" minDate={startOfDay()} value={values.pickup_date} onChange={set("pickup_date")} placeholder={t("choose")} />
         )}
       </Field>
       <Field label={t("returnDate")}>
         {(id) => (
-          <WithIcon icon={<CalendarIcon />}>
-            <input
-              id={id}
-              type="date"
-              min={values.pickup_date || undefined}
-              value={values.return_date ?? ""}
-              onChange={(e) => set("return_date")(e.target.value)}
-              className={cn(fieldClass, "pe-11")}
-            />
-          </WithIcon>
+          <DatePicker
+            id={id}
+            fieldSize="sm"
+            minDate={parseIso(values.pickup_date) ?? startOfDay()}
+            value={values.return_date}
+            onChange={set("return_date")}
+            placeholder={t("choose")}
+          />
         )}
       </Field>
       <Field label={t("brand")}>{(id) => <Select id={id} value={values.brand_id} onChange={set("brand_id")} options={options.brands} placeholder={t("brand")} />}</Field>
@@ -150,39 +134,36 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
       <Field label={t("year")}>{(id) => <Select id={id} value={values.model_year_id} onChange={set("model_year_id")} options={options.years} placeholder={t("year")} />}</Field>
       <Field label={t("seats")}>
         {(id) => (
-          <WithIcon icon={<UserIcon width={18} height={18} />}>
-            <input
-              id={id}
-              type="number"
-              inputMode="numeric"
-              min={1}
-              max={15}
-              value={values.seats ?? ""}
-              onChange={(e) => set("seats")(e.target.value)}
-              placeholder={t("seats")}
-              className={cn(fieldClass, "pe-11")}
-            />
-          </WithIcon>
+          <NumberInput
+            id={id}
+            fieldSize="sm"
+            min={1}
+            max={15}
+            value={values.seats ?? ""}
+            onChange={set("seats")}
+            placeholder={t("seats")}
+            icon={<UserIcon width={18} height={18} className="text-muted" />}
+          />
         )}
       </Field>
       <motion.fieldset variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="flex flex-col gap-2">
         <legend className="mb-2 text-xs font-bold">{t("price")}</legend>
         <div className="grid grid-cols-2 gap-2">
           {(["min_price", "max_price"] as const).map((key) => (
-            <div key={key} className="relative">
-              <input
-                type="number"
-                inputMode="numeric"
-                min={0}
-                step={10}
-                aria-label={`${t("price")} – ${t(key === "min_price" ? "priceMin" : "priceMax")}`}
-                value={values[key] ?? ""}
-                onChange={(e) => set(key)(e.target.value)}
-                placeholder={t(key === "min_price" ? "priceMin" : "priceMax")}
-                className={cn(fieldClass, "pe-9")}
-              />
-              <Image src="/icons/KsaSymbol.svg" alt="" width={11} height={13} className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 opacity-60" />
-            </div>
+            <Input
+              key={key}
+              type="number"
+              inputMode="numeric"
+              fieldSize="sm"
+              min={0}
+              step={10}
+              aria-label={`${t("price")} – ${t(key === "min_price" ? "priceMin" : "priceMax")}`}
+              value={values[key] ?? ""}
+              onChange={(e) => set(key)(e.target.value)}
+              placeholder={t(key === "min_price" ? "priceMin" : "priceMax")}
+              className="tabular-nums"
+              end={<Image src="/icons/KsaSymbol.svg" alt="" width={11} height={13} className="shrink-0 opacity-60" />}
+            />
           ))}
         </div>
       </motion.fieldset>
@@ -234,19 +215,15 @@ function MobileSearchBar({ initial, active, onOpenFilters }: { initial: Filters;
       animate={{ opacity: 1, y: 0 }}
       className="flex items-center gap-2 lg:hidden"
     >
-      <div className="relative flex-1">
-        <span className="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-muted">{pending ? <Spinner /> : <SearchIcon />}</span>
-        <input
-          ref={inputRef}
-          type="search"
-          enterKeyHint="search"
-          aria-label={t("searchLabel")}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={t("searchPlaceholder")}
-          className="h-12 w-full rounded-2xl border border-line bg-white ps-11 pe-4 text-sm shadow-[0_6px_20px_-12px_rgb(0_0_0_/_0.2)] outline-none transition-shadow placeholder:text-muted focus:ring-2 focus:ring-primary/40"
-        />
-      </div>
+      <SearchInput
+        ref={inputRef}
+        aria-label={t("searchLabel")}
+        value={search}
+        onChange={setSearch}
+        placeholder={t("searchPlaceholder")}
+        icon={pending ? <Spinner /> : undefined}
+        wrapperClassName="flex-1 rounded-2xl bg-white shadow-[0_6px_20px_-12px_rgb(0_0_0_/_0.2)]"
+      />
       <motion.button
         type="button"
         onClick={onOpenFilters}
@@ -290,9 +267,9 @@ export function CarFilters({ options, initial }: { options: CarFilterOptions; in
   const active = carFilterKeys.filter((k) => !nonFilterKeys.includes(k) && initial[k]).length;
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.documentElement.style.overflow = open ? "hidden" : "";
     return () => {
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [open]);
 

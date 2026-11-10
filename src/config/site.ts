@@ -14,6 +14,9 @@ export const siteConfig = {
   ],
 } as const;
 
+/** Google Maps link for a place/address (opens the Maps app on phones). */
+export const mapsUrl = (query: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
 export const navLinks = [
   { key: "home", href: "/" },
   { key: "about", href: "/about" },

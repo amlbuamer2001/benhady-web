@@ -7,6 +7,7 @@ import { DateField, TextField } from "@/components/ui/field";
 import { FormAlert } from "@/components/ui/form-alert";
 import { routes } from "@/config/site";
 import { useFieldError } from "@/hooks/use-field-error";
+import { startOfDay } from "@/lib/date";
 import { Link } from "@/i18n/navigation";
 import { ApiError } from "@/lib/api/api-error";
 import { licenseSchema, type LicenseForm } from "../schemas/auth.schemas";
@@ -51,6 +52,7 @@ export function StepLicense({ loading, error, apiError, onBack, onSubmit }: Prop
         render={({ field }) => (
           <DateField
             label={t("licenseExpiry")}
+            minDate={startOfDay(1)}
             placeholder="DD/MM/YYYY"
             error={fieldError(errors.license_expiry_date?.message) ?? server.license_expiry_date}
             value={field.value}

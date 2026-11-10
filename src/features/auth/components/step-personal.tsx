@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { DateField, PhoneField, TextField } from "@/components/ui/field";
 import { FormAlert } from "@/components/ui/form-alert";
 import { useFieldError } from "@/hooks/use-field-error";
+import { startOfDay } from "@/lib/date";
 import { personalSchema, type PersonalForm } from "../schemas/auth.schemas";
 import { StepActions } from "./step-actions";
 
@@ -59,6 +60,7 @@ export function StepPersonal({ defaults, loading, error, onSubmit }: Props) {
             label={t("dob")}
             placeholder={t("dobPlaceholder")}
             hint={t("dobHint")}
+            maxDate={startOfDay()}
             error={fieldError(errors.date_of_birth?.message)}
             value={field.value}
             onChange={field.onChange}

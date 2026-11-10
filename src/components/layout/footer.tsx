@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { MailIcon, PhoneIcon, PinIcon } from "@/components/icons";
-import { navLinks, routes, siteConfig } from "@/config/site";
+import { mapsUrl, navLinks, routes, siteConfig } from "@/config/site";
 import { Logo } from "./logo";
 import { SocialLinks } from "./social-links";
 
@@ -45,16 +45,18 @@ export async function Footer() {
           <ul className="flex flex-col gap-3 text-sm">
             <li className="flex items-center gap-3">
               <MailIcon className="shrink-0 text-primary" width={16} height={16} />
-              <a href={`mailto:${siteConfig.contact.email}`} dir="ltr">{siteConfig.contact.email}</a>
+              <a href={`mailto:${siteConfig.contact.email}`} dir="ltr" className="transition-colors hover:text-primary">{siteConfig.contact.email}</a>
             </li>
             <li className="flex items-center gap-3">
               <PinIcon className="shrink-0 text-primary" width={16} height={16} />
-              <span>{t("address")}</span>
+              <a href={mapsUrl(t("address"))} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary">
+                {t("address")}
+              </a>
             </li>
             {siteConfig.contact.phones.map((p) => (
               <li key={p} className="flex items-center gap-3">
                 <PhoneIcon className="shrink-0 text-primary" width={16} height={16} />
-                <a href={`tel:${p.replace(/\s/g, "")}`} dir="ltr">{p}</a>
+                <a href={`tel:${p.replace(/\s/g, "")}`} dir="ltr" className="transition-colors hover:text-primary">{p}</a>
               </li>
             ))}
           </ul>
