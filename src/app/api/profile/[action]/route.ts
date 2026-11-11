@@ -13,17 +13,17 @@ interface ActionConfig {
   endsSession?: boolean;
 }
 
-// Basic info, licence and identity all go through the single `PUT user/profile` endpoint.
+// Every profile section (basic info, phone, licence, identity, password) goes through `PUT user/profile`;
+// all its fields are optional, so each form sends only its own.
 const updateProfile: ActionConfig = { path: "user/profile", method: "PUT", multipart: true, refreshesUser: true };
 
 // Keep in sync with profile.service.ts.
 const ACTIONS: Record<string, ActionConfig> = {
   update: updateProfile,
+  "update-phone": updateProfile,
   "update-license": updateProfile,
   "update-identity": updateProfile,
-  // ASSUMPTION: not in the API docs yet; adjust the paths once they are.
-  "update-phone": { path: "profile/update-phone", refreshesUser: true },
-  "change-password": { path: "profile/change-password" },
+  "change-password": updateProfile,
   delete: { path: "auth/account", method: "DELETE", endsSession: true },
 };
 
