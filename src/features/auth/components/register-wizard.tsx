@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AuthCard } from "@/components/layout/auth-card";
 import { Stepper } from "@/components/ui/stepper";
 import { routes } from "@/config/site";
@@ -10,7 +10,7 @@ import { dmyToIso } from "@/lib/date";
 import { toApiPhone } from "@/lib/phone";
 import { useApiErrorMessage } from "../hooks/use-api-error-message";
 import { useRegisterStepOne, useRegisterStepTwo } from "../hooks/use-auth";
-import { clearAuthFlow, readAuthFlow, saveAuthFlow } from "../lib/auth-flow";
+import { clearAuthFlow, readAuthFlow, readPersonalDraft, registerPasswordDraft, saveAuthFlow, savePersonalDraft } from "../lib/auth-flow";
 import { buildRegisterPayload, type IdentityDraft } from "../lib/register-payload";
 import { errorsForStep, firstStepWithError, serverFieldErrors, type RegisterStep } from "../lib/register-errors";
 import type { LicenseForm, PasswordForm, PersonalForm } from "../schemas/auth.schemas";
@@ -33,17 +33,21 @@ export function RegisterWizard() {
   const [ready, setReady] = useState(false);
   const [step, setStep] = useState<Step>(1);
   const [verifiedPhone, setVerifiedPhone] = useState<string | null>(null);
+  // `personal` is what was last sent for OTP; `personalDraft` is what is typed now (restored on return).
   const [personal, setPersonal] = useState<PersonalForm>();
+  const [personalDraft, setPersonalDraft] = useState<Partial<PersonalForm>>();
   const [identityType, setIdentityType] = useState<IdentityType>("national_id");
   const [identity, setIdentity] = useState<IdentityDraft>();
-  // Kept in memory only – passwords are never written to storage.
-  const [password, setPassword] = useState<PasswordForm>();
+  // Kept in memory only – passwords are never written to storage (see registerPasswordDraft).
+  const [password, setPassword] = useState<Partial<PasswordForm>>();
   const [license, setLicense] = useState<Partial<LicenseForm>>();
   const [editingPhone, setEditingPhone] = useState(false);
 
   // Coming back to the page (from the OTP screen, terms, browser back…): restore everything typed.
   useEffect(() => {
     const flow = readAuthFlow();
+    const typed = readPersonalDraft() ?? (flow?.flow === "register" ? flow.personal : undefined);
+    if (typed) setPersonalDraft(typed);
     if (flow?.flow === "register") {
       if (flow.personal) setPersonal(flow.personal);
       if (flow.verified) {
@@ -54,8 +58,10 @@ export function RegisterWizard() {
           setIdentity(draft.identity);
           setLicense(draft.license);
         }
-        // The password wasn't saved, so anything past step 3 resumes at the password step.
-        setStep(draft ? (Math.min(draft.step, 3) as Step) : 2);
+        const typedPassword = registerPasswordDraft.get();
+        if (typedPassword) setPassword(typedPassword);
+        // After a full reload the password is gone, so the licence step resumes at the password step.
+        setStep(draft ? (Math.min(draft.step, typedPassword ? 4 : 3) as Step) : 2);
       } else if (flow.editingPhone) {
         setEditingPhone(true);
         saveAuthFlow({ ...flow, editingPhone: false });
@@ -71,6 +77,16 @@ export function RegisterWizard() {
     if (flow?.flow !== "register") return;
     saveAuthFlow({ ...flow, draft: { step, identityType, identity, license } });
   }, [ready, verifiedPhone, step, identityType, identity, license]);
+
+  const onPersonalDraft = useCallback((values: Partial<PersonalForm>) => {
+    setPersonalDraft(values);
+    savePersonalDraft(values);
+  }, []);
+
+  const onPasswordDraft = useCallback((values: Partial<PasswordForm>) => {
+    setPassword(values);
+    registerPasswordDraft.set(values);
+  }, []);
 
   const submitPersonal = (values: PersonalForm) => {
     const phone = toApiPhone(values.phone);
@@ -89,8 +105,9 @@ export function RegisterWizard() {
   };
 
   const submitLicense = (license: Parameters<typeof buildRegisterPayload>[3]) => {
-    if (!verifiedPhone || !identity || !password) return;
-    stepTwo.mutate(buildRegisterPayload(verifiedPhone, identity, password, license), {
+    // Step 3 validated the password before step 4 could be reached.
+    if (!verifiedPhone || !identity || !password?.password || !password.password_confirmation) return;
+    stepTwo.mutate(buildRegisterPayload(verifiedPhone, identity, password as PasswordForm, license), {
       onSuccess: () => {
         clearAuthFlow();
         router.replace(routes.home);
@@ -134,7 +151,8 @@ export function RegisterWizard() {
             >
               {step === 1 && (
                 <StepPersonal
-                  defaults={personal}
+                  defaults={personalDraft ?? personal}
+                  onDraftChange={onPersonalDraft}
                   loading={stepOne.isPending}
                   error={generalError(stepOne.error, stepOneErrors)}
                   serverErrors={errorsAt(1)}
@@ -159,10 +177,11 @@ export function RegisterWizard() {
               {step === 3 && (
                 <StepPassword
                   defaults={password}
+                  onDraftChange={onPasswordDraft}
                   serverErrors={errorsAt(3)}
                   onBack={() => setStep(2)}
                   onSubmit={(v) => {
-                    setPassword(v);
+                    onPasswordDraft(v);
                     setStep(4);
                   }}
                 />

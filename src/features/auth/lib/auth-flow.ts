@@ -1,4 +1,4 @@
-import type { LicenseForm, PersonalForm } from "../schemas/auth.schemas";
+import type { LicenseForm, PasswordForm, PersonalForm } from "../schemas/auth.schemas";
 import type { IdentityType } from "../types";
 import type { IdentityDraft } from "./register-payload";
 
@@ -47,9 +47,47 @@ export function saveAuthFlow(flow: AuthFlow): void {
 }
 
 export function clearAuthFlow(): void {
+  passwordDraft = undefined;
   try {
     sessionStorage.removeItem(KEY);
+    sessionStorage.removeItem(PERSONAL_KEY);
   } catch {
     /* noop */
   }
 }
+
+/**
+ * Step 1 as typed, before "next" is pressed. Kept apart from the flow itself: the OTP
+ * screen treats any stored flow as a pending verification.
+ */
+const PERSONAL_KEY = "bh:register-personal";
+
+export function readPersonalDraft(): Partial<PersonalForm> | null {
+  try {
+    const raw = sessionStorage.getItem(PERSONAL_KEY);
+    return raw ? (JSON.parse(raw) as Partial<PersonalForm>) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function savePersonalDraft(values: Partial<PersonalForm>): void {
+  try {
+    sessionStorage.setItem(PERSONAL_KEY, JSON.stringify(values));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+/**
+ * The register password lives in module memory only: it survives in-app navigation
+ * (terms page, OTP screen, browser back) but never reaches storage, and a reload drops it.
+ */
+let passwordDraft: Partial<PasswordForm> | undefined;
+
+export const registerPasswordDraft = {
+  get: () => passwordDraft,
+  set: (values: Partial<PasswordForm>) => {
+    passwordDraft = values;
+  },
+};

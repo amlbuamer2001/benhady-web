@@ -12,7 +12,9 @@ import { MIN_AGE, personalSchema, type PersonalForm } from "../schemas/auth.sche
 import { StepActions } from "./step-actions";
 
 interface Props {
-  defaults?: PersonalForm;
+  defaults?: Partial<PersonalForm>;
+  /** Called as the user types, so the wizard can save progress. */
+  onDraftChange?: (values: Partial<PersonalForm>) => void;
   loading: boolean;
   error?: string;
   /** Server errors for this step's fields (e.g. "email already taken"), shown under each field. */
@@ -22,7 +24,7 @@ interface Props {
   onSubmit: (values: PersonalForm) => void;
 }
 
-export function StepPersonal({ defaults, loading, error, serverErrors, focusPhone, onSubmit }: Props) {
+export function StepPersonal({ defaults, onDraftChange, loading, error, serverErrors, focusPhone, onSubmit }: Props) {
   const t = useTranslations("auth.register.step1");
   const fieldError = useFieldError();
   const {
@@ -30,11 +32,18 @@ export function StepPersonal({ defaults, loading, error, serverErrors, focusPhon
     control,
     handleSubmit,
     setFocus,
+    watch,
     formState: { errors, dirtyFields },
   } = useForm<PersonalForm>({
     resolver: zodResolver(personalSchema),
-    defaultValues: defaults ?? { name: "", email: "", phone: "", date_of_birth: "" },
+    defaultValues: { name: "", email: "", phone: "", date_of_birth: "", ...defaults },
   });
+
+  useEffect(() => {
+    if (!onDraftChange) return;
+    const sub = watch((values) => onDraftChange(values));
+    return () => sub.unsubscribe();
+  }, [watch, onDraftChange]);
 
   useEffect(() => {
     if (focusPhone) setFocus("phone", { shouldSelect: true });
