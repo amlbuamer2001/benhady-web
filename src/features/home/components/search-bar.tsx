@@ -60,7 +60,7 @@ export function SearchBar({ cities }: { cities: FilterOption[] }) {
       transition={{ type: "spring", stiffness: 90, damping: 18 }}
       className="mx-auto max-w-7xl px-4 py-12 sm:px-8"
     >
-      <form onSubmit={onSubmit} className="flex flex-col gap-4 md:flex-row md:items-end">
+      <form noValidate onSubmit={onSubmit} className="flex flex-col gap-4 md:flex-row md:items-end">
         <SearchField id="search-city" label={t("city")}>
           <Select
             id="search-city"

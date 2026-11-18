@@ -177,7 +177,7 @@ interface DateFieldProps extends Omit<BaseFieldProps, "value" | "onChange" | "ty
  * DD/MM/YYYY field: type it (auto-masked) or pick it from the calendar.
  * Value stays in UI format; convert with dmyToIso before sending.
  */
-export function DateField({ label, error, hint, value, onChange, minDate, maxDate, ...input }: DateFieldProps) {
+export function DateField({ label, error, hint, value, onChange, minDate, maxDate, placeholder, ...input }: DateFieldProps) {
   const id = useId();
   const t = useTranslations("common");
   const [open, setOpen] = useState(false);
@@ -205,6 +205,7 @@ export function DateField({ label, error, hint, value, onChange, minDate, maxDat
               inputMode="numeric"
               autoComplete="off"
               value={value}
+              placeholder={placeholder ?? t("dateFormat")}
               onChange={(e) => onChange(maskDmy(e.target.value))}
               invalid={!!error}
               aria-describedby={describedBy(id, error, hint)}

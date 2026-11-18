@@ -29,7 +29,8 @@
     "am": "AM",
     "pm": "PM",
     "hour": "Hour",
-    "minute": "Minutes"
+    "minute": "Minutes",
+    "dateFormat": "DD/MM/YYYY"
   },
   "nav": {
     "main": "Main navigation",
@@ -115,7 +116,6 @@
         "phone": "Mobile number",
         "phonePlaceholder": "05 XXXX XXX",
         "dob": "Date of birth",
-        "dobPlaceholder": "DD/MM/YYYY",
         "dobHint": "You must be at least 21 years old"
       },
       "step2": {

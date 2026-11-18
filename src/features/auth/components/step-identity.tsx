@@ -126,7 +126,6 @@ function IdForm({
           <DateField
             label={t("idEndDate")}
             minDate={startOfDay(1)}
-            placeholder="DD/MM/YYYY"
             error={fieldError(errors.id_number_end_date?.message) ?? server("id_number_end_date")}
             value={field.value}
             onChange={field.onChange}

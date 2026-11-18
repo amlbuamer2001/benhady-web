@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { ageInYears, isFutureDate, parseDmy } from "@/lib/date";
 
+/** Minimum driver age; also caps the birth-date calendar. */
+export const MIN_AGE = 21;
+
 /** All messages are translation keys under the `validation` namespace. */
 const required = "required";
 
@@ -48,7 +51,7 @@ export const personalSchema = z.object({
   phone: phoneSchema.shape.phone,
   date_of_birth: dmyDate.refine((v) => {
     const d = parseDmy(v);
-    return d ? ageInYears(d) >= 21 : true;
+    return d ? ageInYears(d) >= MIN_AGE : true;
   }, "minAge"),
 });
 export type PersonalForm = z.infer<typeof personalSchema>;

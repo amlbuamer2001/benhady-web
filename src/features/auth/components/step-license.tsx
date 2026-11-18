@@ -65,7 +65,6 @@ export function StepLicense({ loading, error, serverErrors, defaults, onDraftCha
           <DateField
             label={t("licenseExpiry")}
             minDate={startOfDay(1)}
-            placeholder="DD/MM/YYYY"
             error={fieldError(errors.license_expiry_date?.message) ?? server("license_expiry_date")}
             value={field.value}
             onChange={field.onChange}

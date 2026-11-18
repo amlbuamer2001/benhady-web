@@ -209,6 +209,7 @@ function MobileSearchBar({ initial, active, onOpenFilters }: { initial: Filters;
 
   return (
     <motion.form
+      noValidate
       onSubmit={submit}
       role="search"
       initial={{ opacity: 0, y: -10 }}

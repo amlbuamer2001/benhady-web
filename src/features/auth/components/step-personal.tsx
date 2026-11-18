@@ -6,9 +6,9 @@ import { Controller, useForm } from "react-hook-form";
 import { DateField, PhoneField, TextField } from "@/components/ui/field";
 import { FormAlert } from "@/components/ui/form-alert";
 import { useFieldError } from "@/hooks/use-field-error";
-import { startOfDay } from "@/lib/date";
+import { yearsAgo } from "@/lib/date";
 import { serverMessage, type ServerErrors } from "../lib/register-errors";
-import { personalSchema, type PersonalForm } from "../schemas/auth.schemas";
+import { MIN_AGE, personalSchema, type PersonalForm } from "../schemas/auth.schemas";
 import { StepActions } from "./step-actions";
 
 interface Props {
@@ -71,9 +71,8 @@ export function StepPersonal({ defaults, loading, error, serverErrors, focusPhon
         render={({ field }) => (
           <DateField
             label={t("dob")}
-            placeholder={t("dobPlaceholder")}
             hint={t("dobHint")}
-            maxDate={startOfDay()}
+            maxDate={yearsAgo(MIN_AGE)}
             error={fieldError(errors.date_of_birth?.message) ?? server("date_of_birth")}
             value={field.value}
             onChange={field.onChange}

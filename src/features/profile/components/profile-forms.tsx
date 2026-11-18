@@ -12,7 +12,8 @@ import { useApiErrorMessage } from "@/features/auth/hooks/use-api-error-message"
 import { useFieldError } from "@/hooks/use-field-error";
 import { useRouter } from "@/i18n/navigation";
 import { ApiError } from "@/lib/api/api-error";
-import { dmyToIso, isoToDmy, startOfDay } from "@/lib/date";
+import { MIN_AGE } from "@/features/auth/schemas/auth.schemas";
+import { dmyToIso, isoToDmy, startOfDay, yearsAgo } from "@/lib/date";
 import { toApiPhone } from "@/lib/phone";
 import { useChangePassword, useUpdateIdentity, useUpdateLicense, useUpdatePhone, useUpdateProfile } from "../hooks/use-profile";
 import {
@@ -87,7 +88,7 @@ function DmyController<T extends FieldValues>({ control, name, label, error, min
       control={control}
       name={name}
       render={({ field }) => (
-        <DateField label={label} placeholder="DD/MM/YYYY" error={error} minDate={minDate} maxDate={maxDate} value={field.value} onChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
+        <DateField label={label} error={error} minDate={minDate} maxDate={maxDate} value={field.value} onChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
       )}
     />
   );
@@ -114,7 +115,7 @@ export function BasicForm({ profile }: { profile: Profile }) {
     <FormShell onSubmit={onSubmit} mutation={mutation}>
       <Item><TextField label={t("name")} autoComplete="name" error={fieldError(errors.name?.message) ?? server.name} {...register("name")} /></Item>
       <Item><TextField label={t("email")} type="email" autoComplete="email" error={fieldError(errors.email?.message) ?? server.email} {...register("email")} /></Item>
-      <Item><DmyController control={control} name="date_of_birth" maxDate={startOfDay()} label={t("dob")} error={fieldError(errors.date_of_birth?.message) ?? server.date_of_birth} /></Item>
+      <Item><DmyController control={control} name="date_of_birth" maxDate={yearsAgo(MIN_AGE)} label={t("dob")} error={fieldError(errors.date_of_birth?.message) ?? server.date_of_birth} /></Item>
     </FormShell>
   );
 }

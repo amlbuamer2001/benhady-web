@@ -1,7 +1,9 @@
 /** DD/MM/YYYY helpers (the UI format) and conversion to the API's Y-m-d. */
+import { toLatinDigits } from "./digits";
 
+/** Accepts Arabic-Indic digits too (Arabic keyboards), so typing ١٢٠٥١٩٩٥ gives 12/05/1995. */
 export function maskDmy(raw: string): string {
-  const digits = raw.replace(/\D/g, "").slice(0, 8);
+  const digits = toLatinDigits(raw).slice(0, 8);
   const parts = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)].filter(Boolean);
   return parts.join("/");
 }
@@ -56,6 +58,13 @@ export function toIso(date: Date): string {
 export function parseIso(value?: string | null): Date | null {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(value ?? "");
   return m ? parseDmy(`${m[3]}/${m[2]}/${m[1]}`) : null;
+}
+
+/** Today at 00:00 local time, `years` years ago (e.g. the latest birth date for a minimum age). */
+export function yearsAgo(years: number): Date {
+  const d = startOfDay();
+  d.setFullYear(d.getFullYear() - years);
+  return d;
 }
 
 /** Today at 00:00 local time, shifted by `days`. */
