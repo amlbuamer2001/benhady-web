@@ -76,7 +76,8 @@ export function StepLicense({ loading, error, serverErrors, defaults, onDraftCha
       <Checkbox error={fieldError(errors.terms?.message) ?? server("terms")} {...register("terms")}>
         {t.rich("terms", {
           link: (chunks) => (
-            <Link href={routes.terms} target="_blank" rel="noopener" className="text-primary underline">
+            // Same tab: the wizard saves everything typed (see register-wizard.tsx), so browser back restores it.
+            <Link href={routes.terms} className="text-primary underline">
               {chunks}
             </Link>
           ),
