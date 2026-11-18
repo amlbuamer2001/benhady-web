@@ -10,7 +10,7 @@ import { routes } from "@/config/site";
 import { useFieldError } from "@/hooks/use-field-error";
 import { startOfDay } from "@/lib/date";
 import { Link } from "@/i18n/navigation";
-import { serverMessage, type ServerErrors } from "../lib/register-errors";
+import { useServerMessage, type ServerErrors } from "../lib/register-errors";
 import { licenseSchema, type LicenseForm } from "../schemas/auth.schemas";
 import { StepActions } from "./step-actions";
 
@@ -35,7 +35,7 @@ export function StepLicense({ loading, error, serverErrors, defaults, onDraftCha
     control,
     handleSubmit,
     watch,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<LicenseForm>({
     resolver: zodResolver(licenseSchema),
     defaultValues: { driving_license_number: "", license_expiry_date: "", terms: false, ...defaults },
@@ -47,7 +47,7 @@ export function StepLicense({ loading, error, serverErrors, defaults, onDraftCha
     return () => sub.unsubscribe();
   }, [watch, onDraftChange]);
 
-  const server = serverMessage(serverErrors, dirtyFields);
+  const server = useServerMessage(serverErrors, watch());
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">

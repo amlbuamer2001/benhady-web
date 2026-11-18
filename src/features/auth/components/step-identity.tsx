@@ -17,7 +17,7 @@ import {
 } from "../schemas/auth.schemas";
 import type { IdentityType } from "../types";
 import { identityTypes, type IdentityDraft } from "../lib/register-payload";
-import { serverMessage, type ServerErrors } from "../lib/register-errors";
+import { useServerMessage, type ServerErrors } from "../lib/register-errors";
 import { StepActions } from "./step-actions";
 
 interface Props {
@@ -102,13 +102,13 @@ function IdForm({
     watch,
     control,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<IdIdentityForm>({
     resolver: zodResolver(idIdentitySchemaFor(type)),
     defaultValues: defaults ?? { id_number: "", id_number_end_date: "", version_number: "" },
   });
   useReportChanges(watch, onChange);
-  const server = serverMessage(serverErrors, dirtyFields);
+  const server = useServerMessage(serverErrors, watch());
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
       <TextField
@@ -166,13 +166,13 @@ function VisitorForm({
     register,
     watch,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<VisitorIdentityForm>({
     resolver: zodResolver(visitorIdentitySchema),
     defaultValues: defaults ?? { license_number: "", border_entry_number: "" },
   });
   useReportChanges(watch, onChange);
-  const server = serverMessage(serverErrors, dirtyFields);
+  const server = useServerMessage(serverErrors, watch());
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
       <TextField

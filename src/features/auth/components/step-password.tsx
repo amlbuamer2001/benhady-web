@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { PasswordField } from "@/components/ui/field";
 import { useFieldError } from "@/hooks/use-field-error";
-import { serverMessage, type ServerErrors } from "../lib/register-errors";
+import { useServerMessage, type ServerErrors } from "../lib/register-errors";
 import { passwordSchema, type PasswordForm } from "../schemas/auth.schemas";
 import { StepActions } from "./step-actions";
 
@@ -25,7 +25,7 @@ export function StepPassword({ defaults, onDraftChange, serverErrors, onBack, on
     register,
     handleSubmit,
     watch,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<PasswordForm>({
     resolver: zodResolver(passwordSchema),
     defaultValues: { password: "", password_confirmation: "", ...defaults },
@@ -36,7 +36,7 @@ export function StepPassword({ defaults, onDraftChange, serverErrors, onBack, on
     const sub = watch((values) => onDraftChange(values));
     return () => sub.unsubscribe();
   }, [watch, onDraftChange]);
-  const server = serverMessage(serverErrors, dirtyFields);
+  const server = useServerMessage(serverErrors, watch());
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
       <PasswordField

@@ -7,7 +7,7 @@ import { DateField, PhoneField, TextField } from "@/components/ui/field";
 import { FormAlert } from "@/components/ui/form-alert";
 import { useFieldError } from "@/hooks/use-field-error";
 import { yearsAgo } from "@/lib/date";
-import { serverMessage, type ServerErrors } from "../lib/register-errors";
+import { useServerMessage, type ServerErrors } from "../lib/register-errors";
 import { MIN_AGE, personalSchema, type PersonalForm } from "../schemas/auth.schemas";
 import { StepActions } from "./step-actions";
 
@@ -33,7 +33,7 @@ export function StepPersonal({ defaults, onDraftChange, loading, error, serverEr
     handleSubmit,
     setFocus,
     watch,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm<PersonalForm>({
     resolver: zodResolver(personalSchema),
     defaultValues: { name: "", email: "", phone: "", date_of_birth: "", ...defaults },
@@ -49,7 +49,7 @@ export function StepPersonal({ defaults, onDraftChange, loading, error, serverEr
     if (focusPhone) setFocus("phone", { shouldSelect: true });
   }, [focusPhone, setFocus]);
 
-  const server = serverMessage(serverErrors, dirtyFields);
+  const server = useServerMessage(serverErrors, watch());
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">

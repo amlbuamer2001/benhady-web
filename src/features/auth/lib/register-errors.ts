@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ApiError } from "@/lib/api/api-error";
 
 export type RegisterStep = 1 | 2 | 3 | 4;
@@ -63,9 +64,16 @@ export function errorsForStep(errors: ServerErrors, step: RegisterStep): ServerE
 }
 
 /**
- * Message to show under `field`: hidden again as soon as the user edits that field,
- * so a fixed value doesn't keep showing the old server complaint.
+ * Message to show under `field`: shown until the user changes that field's value after the
+ * error arrived, so a fixed value doesn't keep showing the old server complaint.
+ * (Not "dirty": a field the user typed in before submitting is already dirty, which hid the
+ * error exactly when it mattered, e.g. "email already taken".)
  */
-export function serverMessage(errors: ServerErrors | undefined, dirty: Partial<Record<string, unknown>>) {
-  return (field: string) => (dirty[field] ? undefined : errors?.[field]);
+export function useServerMessage(errors: ServerErrors | undefined, values: Partial<Record<string, unknown>>) {
+  // The wizard rebuilds the errors object on every render, so compare by content.
+  const key = JSON.stringify(errors ?? {});
+  const [snapshot, setSnapshot] = useState({ key, values });
+  if (snapshot.key !== key) setSnapshot({ key, values });
+  const atError = snapshot.key === key ? snapshot.values : values;
+  return (field: string) => (Object.is(values[field], atError[field]) ? errors?.[field] : undefined);
 }
