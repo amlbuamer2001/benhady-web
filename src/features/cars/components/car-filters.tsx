@@ -3,7 +3,7 @@ import { AnimatePresence, motion, type PanInfo } from "motion/react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { CloseIcon, SearchIcon, UserIcon } from "@/components/icons";
+import { CloseIcon, SearchIcon } from "@/components/icons";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input, NumberInput, SearchInput } from "@/components/ui/field";
 import { Select as UiSelect } from "@/components/ui/select";
@@ -143,7 +143,6 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
             value={values.seats ?? ""}
             onChange={set("seats")}
             placeholder={t("seats")}
-            icon={<UserIcon width={18} height={18} className="text-muted" />}
           />
         )}
       </Field>
