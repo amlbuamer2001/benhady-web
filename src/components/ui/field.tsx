@@ -5,6 +5,7 @@ import { cn } from "@/lib/cn";
 import Image from "next/image";
 import { CalendarIcon, CloseIcon, EyeIcon, EyeOffIcon, SearchIcon } from "@/components/icons";
 import { maskDmy, parseDmy, toDmy } from "@/lib/date";
+import { toLatinDigits } from "@/lib/digits";
 import { Calendar } from "./calendar";
 import { PickerFooter } from "./date-picker";
 import { fieldBox, fieldIcon, type FieldSize } from "./field-styles";
@@ -330,15 +331,21 @@ export function NumberInput({ value, onChange, min, max, step = 1, icon, classNa
   const bump = (dir: 1 | -1) => onChange(String(clamp(num === undefined ? (min ?? 0) : num + dir * step)));
   const stepper = "size-8 bg-white shadow-[0_2px_6px_-2px_rgb(0_0_0_/_0.2)] text-ink active:scale-90";
 
+  // A text input, not type="number": the browser localizes a number input's digits once, from the page
+  // language at mount, so they stayed Arabic after switching to English. Whole non-negative numbers only.
   return (
     <Input
-      type="number"
+      type="text"
       inputMode="numeric"
-      min={min}
-      max={max}
-      step={step}
+      autoComplete="off"
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => onChange(toLatinDigits(e.target.value))}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          e.preventDefault();
+          bump(e.key === "ArrowUp" ? 1 : -1);
+        }
+      }}
       onBlur={(e) => {
         if (e.target.value !== "") onChange(String(clamp(Number(e.target.value))));
       }}

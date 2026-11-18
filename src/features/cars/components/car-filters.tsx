@@ -8,6 +8,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Input, NumberInput, SearchInput } from "@/components/ui/field";
 import { Select as UiSelect } from "@/components/ui/select";
 import { parseIso, startOfDay } from "@/lib/date";
+import { toLatinDigits } from "@/lib/digits";
 import { carFilterKeys, nonFilterKeys, type CarFilterOptions, type CarFilters as Filters, type FilterOption } from "../types";
 import { useCarsNav } from "./cars-shell";
 
@@ -79,7 +80,7 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
   };
 
   return (
-    <motion.form onSubmit={submit} initial="hidden" animate="show" transition={{ staggerChildren: 0.04 }} className="flex flex-col gap-4">
+    <motion.form noValidate onSubmit={submit} initial="hidden" animate="show" transition={{ staggerChildren: 0.04 }} className="flex flex-col gap-4">
       {showSearch && (
       <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="flex items-center gap-2">
         <SearchInput
@@ -152,14 +153,13 @@ function FiltersForm({ options, initial, onDone, showSearch = true }: { options:
           {(["min_price", "max_price"] as const).map((key) => (
             <Input
               key={key}
-              type="number"
+              type="text"
               inputMode="numeric"
+              autoComplete="off"
               fieldSize="sm"
-              min={0}
-              step={10}
               aria-label={`${t("price")} – ${t(key === "min_price" ? "priceMin" : "priceMax")}`}
               value={values[key] ?? ""}
-              onChange={(e) => set(key)(e.target.value)}
+              onChange={(e) => set(key)(toLatinDigits(e.target.value))}
               placeholder={t(key === "min_price" ? "priceMin" : "priceMax")}
               className="tabular-nums"
               end={<Image src="/icons/KsaSymbol.svg" alt="" width={11} height={13} className="shrink-0 opacity-60" />}
